@@ -1,0 +1,102 @@
+# Data Configuration for TCGA-LUAD Preprocessing
+# Phase 2: Data Preprocessing & Feature Engineering
+
+# Input Data
+input:
+  raw_data_file: "data/raw/TCGA-LUAD.star_tpm.tsv"
+  clinical_data_file: "data/raw/TCGA-LUAD.clinical.tsv"  # Optional
+
+# Sample Filtering
+sample_filtering:
+  tumor_sample_suffix: "01A"  # Primary solid tumor
+  normal_sample_suffix: "11A"  # Normal tissue (exclude)
+  keep_only_tumor: true
+  handle_missing_values: "drop"  # Options: drop, impute, keep
+  min_samples_per_gene: 1  # Minimum samples with non-missing values
+
+# Feature Processing
+feature_processing:
+  remove_ensembl_version: true  # Remove version suffix from gene IDs (e.g., .15)
+  convert_to_float32: true  # Convert to float32 for PyTorch
+  
+  # Variance-based feature selection
+  variance_selection:
+    enabled: true
+    n_top_genes: 2000  # Keep top N most variable genes (1000-2000 recommended)
+    min_variance_threshold: 0.01  # Minimum variance to keep a gene
+    
+  # Gene filtering
+  gene_filtering:
+    remove_zero_variance: true
+    remove_low_expression: true
+    min_mean_expression: 0.1  # Minimum mean expression across samples
+    min_max_expression: 1.0  # At least one sample must have this value
+
+# Dimensionality Reduction (Optional)
+dimensionality_reduction:
+  pca:
+    enabled: false  # Set to true to apply PCA
+    n_components: 500  # Number of components (300-500 recommended)
+    variance_ratio: 0.90  # Alternative: preserve X% of variance
+    whiten: false  # Whiten the components
+    random_state: 42
+
+# Data Normalization
+normalization:
+  # Note: Data is already log-transformed, additional normalization optional
+  standardize: true  # Z-score normalization (mean=0, std=1) per feature
+  method: "zscore"  # Options: zscore, minmax, robust, none
+  
+  zscore:
+    with_mean: true
+    with_std: true
+  
+  minmax:
+    feature_range: [0, 1]
+  
+  robust:
+    with_centering: true
+    with_scaling: true
+    quantile_range: [25.0, 75.0]
+
+# Data Splitting
+data_splitting:
+  create_holdout: false  # Create holdout set for final evaluation
+  holdout_ratio: 0.15  # 15% holdout (use only if create_holdout=true)
+  random_state: 42
+  shuffle: true
+
+# Output Configuration
+output:
+  processed_data_dir: "data/processed"
+  
+  # File names
+  processed_data_file: "luad_processed.pt"  # PyTorch tensor format
+  processed_data_numpy: "luad_processed.npz"  # NumPy format (alternative)
+  feature_names_file: "feature_names.txt"
+  sample_ids_file: "sample_ids.txt"
+  metadata_file: "metadata.json"
+  pca_transformer_file: "pca_transformer.pkl"
+  scaler_file: "scaler.pkl"
+  
+  # Statistics and reports
+  preprocessing_report: "preprocessing_report.json"
+  feature_selection_report: "feature_selection_report.json"
+
+# Quality Control
+quality_control:
+  check_nan_inf: true  # Check for NaN/Inf values
+  check_duplicates: true  # Check for duplicate samples/genes
+  save_qc_plots: true  # Save quality control visualizations
+  qc_plots_dir: "results/preprocessing"
+
+# Reproducibility
+reproducibility:
+  random_seed: 42
+  save_config: true  # Save this config with processed data
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  save_logs: true
+  log_dir: "logs/preprocessing"
