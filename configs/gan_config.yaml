@@ -1,0 +1,178 @@
+# GAN Configuration for TCGA-LUAD
+# Phase 4 & 5: GAN Model Design and Training
+
+# Input Data
+input:
+  processed_data_file: "data/processed/luad_processed.pt"
+  feature_names_file: "data/processed/feature_names.txt"
+  sample_ids_file: "data/processed/sample_ids.txt"
+
+# Model Architecture
+architecture:
+  model_type: "wgan_gp"  # wgan_gp, vanilla_gan, aae
+  
+  # Generator
+  generator:
+    latent_dim: 128  # Size of latent vector z
+    hidden_dims: [256, 512, 1024]  # Hidden layer dimensions
+    activation: "leaky_relu"  # leaky_relu, relu, elu
+    leaky_slope: 0.2  # For LeakyReLU
+    use_batch_norm: true  # BatchNorm after each layer
+    output_activation: "tanh"  # tanh, linear, sigmoid
+    dropout: 0.0  # Dropout rate (0 = no dropout)
+  
+  # Critic (Discriminator)
+  critic:
+    hidden_dims: [512, 256, 128]  # Hidden layer dimensions
+    activation: "leaky_relu"  # leaky_relu, relu, elu
+    leaky_slope: 0.2  # For LeakyReLU
+    use_batch_norm: false  # No BatchNorm for critic (WGAN-GP requirement)
+    dropout: 0.3  # Dropout rate
+    spectral_norm: false  # Alternative to gradient penalty
+  
+  # Weight Initialization
+  weight_init:
+    method: "xavier_uniform"  # xavier_uniform, xavier_normal, he_uniform, he_normal
+    gain: 1.0  # Initialization gain
+
+# Training Configuration
+training:
+  # Basic settings
+  num_epochs: 500
+  batch_size: 64
+  n_critic: 5  # Train critic n times per generator update
+  
+  # Optimizer
+  optimizer:
+    generator:
+      type: "adam"  # adam, rmsprop, sgd
+      learning_rate: 0.0001
+      betas: [0.5, 0.9]  # For Adam
+      weight_decay: 0.0
+    
+    critic:
+      type: "adam"
+      learning_rate: 0.0001
+      betas: [0.5, 0.9]
+      weight_decay: 0.0
+  
+  # Learning rate scheduler
+  lr_scheduler:
+    enabled: false
+    type: "step"  # step, exponential, cosine
+    step_size: 100  # For StepLR
+    gamma: 0.5  # Decay factor
+  
+  # WGAN-GP specific
+  wgan_gp:
+    gradient_penalty_weight: 10  # Lambda for gradient penalty
+    clip_value: null  # Not used in WGAN-GP (use gradient penalty instead)
+  
+  # Regularization
+  regularization:
+    label_smoothing: false  # For vanilla GAN
+    noise_std: 0.0  # Add noise to inputs (instance noise)
+
+# Training Monitoring
+monitoring:
+  # Logging
+  log_interval: 10  # Log every N epochs
+  print_interval: 1  # Print every N epochs
+  
+  # Checkpointing
+  checkpoint_interval: 50  # Save checkpoint every N epochs
+  save_best: true  # Save best model based on critic loss
+  keep_last_n: 3  # Keep only last N checkpoints
+  
+  # Validation
+  validate_interval: 25  # Generate samples for validation every N epochs
+  n_validation_samples: 100  # Number of samples to generate for validation
+  
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 50  # Stop if no improvement for N epochs
+    min_delta: 0.001  # Minimum change to qualify as improvement
+    monitor: "critic_loss"  # Metric to monitor (critic_loss, generator_loss)
+
+# Quality Validation
+quality_validation:
+  # Statistical tests
+  statistical_tests:
+    - mean_difference  # Compare mean of real vs synthetic
+    - variance_ratio  # Compare variance
+    - correlation_comparison  # Compare correlation matrices
+    - ks_test  # Kolmogorov-Smirnov test
+  
+  # Distance metrics
+  distance_metrics:
+    - wasserstein_distance  # Earth mover's distance
+    - kl_divergence  # KL divergence (if applicable)
+  
+  # Thresholds for quality
+  quality_thresholds:
+    max_mean_difference: 0.1  # Maximum allowed mean difference
+    min_variance_ratio: 0.8  # Minimum variance ratio (synthetic/real)
+    max_variance_ratio: 1.2  # Maximum variance ratio
+    min_correlation: 0.7  # Minimum correlation between real and synthetic
+
+# Visualization
+visualization:
+  # Plots to generate during training
+  plots:
+    - loss_curves  # Generator and critic loss over time
+    - gradient_penalty  # Gradient penalty over time
+    - sample_quality  # PCA/t-SNE of real vs synthetic
+    - feature_distributions  # Histograms of features
+    - correlation_heatmap  # Correlation matrices
+  
+  # Settings
+  save_plots: true
+  plot_format: "png"  # png, pdf, svg
+  dpi: 300
+
+# Output Configuration
+output:
+  # Directories
+  checkpoint_dir: "models/checkpoints"
+  log_dir: "logs/training"
+  tensorboard_dir: "logs/training/tensorboard"
+  validation_dir: "results/gan_validation"
+  
+  # File names
+  best_model_name: "wgan_gp_best.pt"
+  final_model_name: "wgan_gp_final.pt"
+  training_log: "training.log"
+  loss_history: "loss_history.json"
+  quality_report: "quality_validation_report.json"
+
+# Reproducibility
+reproducibility:
+  random_seed: 42
+  deterministic: true  # Use deterministic algorithms (slower but reproducible)
+  benchmark: false  # cuDNN benchmark (faster but not deterministic)
+
+# Hardware
+hardware:
+  device: "auto"  # auto, cuda, cpu
+  gpu_id: 0  # GPU device ID
+  num_workers: 4  # DataLoader workers
+  pin_memory: true  # Pin memory for faster GPU transfer
+
+# Advanced Settings
+advanced:
+  # Gradient clipping
+  gradient_clipping:
+    enabled: false
+    max_norm: 1.0  # Maximum gradient norm
+  
+  # Mixed precision training
+  mixed_precision:
+    enabled: false  # Requires CUDA
+    opt_level: "O1"  # O0, O1, O2, O3
+  
+  # Distributed training
+  distributed:
+    enabled: false
+    backend: "nccl"  # nccl, gloo
+    world_size: 1
