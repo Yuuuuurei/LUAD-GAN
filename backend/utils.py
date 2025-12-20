@@ -92,8 +92,19 @@ def save_json(data: dict, filepath: Path):
         filepath: Path to save JSON file
     """
     filepath.parent.mkdir(parents=True, exist_ok=True)
+    
+    def convert_numpy(obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return obj
+    
     with open(filepath, 'w') as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, indent=2, default=convert_numpy)
     print(f"Saved JSON to {filepath}")
 
 def load_json(filepath: Path) -> dict:

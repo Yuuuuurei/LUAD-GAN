@@ -424,7 +424,7 @@ class LUADPreprocessor:
                 pickle.dump(self.gene_variances, f)
             self.logger.info(f"Saved gene variances to: {var_file}")
         
-        self.logger.info("✓ Preprocessor saved successfully")
+        self.logger.info("Preprocessor saved successfully")
     
     def load(self, output_dir: Path):
         """
