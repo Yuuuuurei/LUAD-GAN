@@ -1,391 +1,518 @@
 """
-Clustering algorithms module for TCGA-LUAD.
-Implements various clustering methods for baseline and GAN-assisted clustering.
+Clustering Algorithms Module for GAN-LUAD Clustering Project
+Phase 3 & 7: Baseline and GAN-Assisted Clustering
+
+This module provides implementations of various clustering algorithms:
+- K-Means clustering
+- Hierarchical clustering (Agglomerative)
+- Spectral clustering
+- DBSCAN (density-based, optional)
+
+Supports both baseline (real data only) and GAN-assisted (augmented data) clustering.
+
+Author: GAN-LUAD Team
+Date: 2025
 """
 
 import numpy as np
-from typing import Tuple, Dict, List, Optional
+from typing import Dict, List, Tuple, Optional, Union
 from sklearn.cluster import KMeans, AgglomerativeClustering, SpectralClustering, DBSCAN
+from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-from sklearn.manifold import TSNE
 import logging
+from pathlib import Path
+import json
 
-try:
-    import umap
-    UMAP_AVAILABLE = True
-except ImportError:
-    UMAP_AVAILABLE = False
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class ClusteringPipeline:
     """
-    Pipeline for applying clustering algorithms to gene expression data.
+    Comprehensive clustering pipeline supporting multiple algorithms.
     """
     
     def __init__(
         self,
-        random_state: int = 42,
-        n_jobs: int = -1,
-        logger: Optional[logging.Logger] = None
+        data: np.ndarray,
+        sample_labels: Optional[np.ndarray] = None,
+        scale_data: bool = True,
+        random_state: int = 42
     ):
         """
         Initialize clustering pipeline.
         
         Args:
+            data: Feature matrix (n_samples, n_features)
+            sample_labels: Optional labels (0=real, 1=synthetic) for tracking
+            scale_data: Whether to standardize features
             random_state: Random seed for reproducibility
-            n_jobs: Number of parallel jobs (-1 for all cores)
-            logger: Logger instance
         """
+        self.data = data
+        self.sample_labels = sample_labels
         self.random_state = random_state
-        self.n_jobs = n_jobs
-        self.logger = logger or logging.getLogger(__name__)
         
-        # Store fitted models
-        self.models = {}
-        self.labels = {}
-        self.embeddings = {}
-    
-    def apply_pca(
-        self,
-        data: np.ndarray,
-        n_components: int = 50
-    ) -> Tuple[np.ndarray, PCA]:
-        """
-        Apply PCA for dimensionality reduction.
+        # Standardize data if requested
+        if scale_data:
+            self.scaler = StandardScaler()
+            self.data_scaled = self.scaler.fit_transform(data)
+            logger.info("Data standardized (mean=0, std=1)")
+        else:
+            self.scaler = None
+            self.data_scaled = data
         
-        Args:
-            data: Input data (samples × features)
-            n_components: Number of components
-            
-        Returns:
-            Tuple of (transformed data, fitted PCA model)
-        """
-        self.logger.info(f"Applying PCA: {data.shape[1]} → {n_components} dimensions")
+        self.n_samples, self.n_features = data.shape
         
-        pca = PCA(n_components=n_components, random_state=self.random_state)
-        transformed = pca.fit_transform(data)
-        
-        variance_explained = pca.explained_variance_ratio_.sum()
-        self.logger.info(f"PCA variance explained: {variance_explained:.4f}")
-        
-        self.embeddings['pca'] = transformed
-        self.models['pca'] = pca
-        
-        return transformed, pca
-    
-    def apply_tsne(
-        self,
-        data: np.ndarray,
-        n_components: int = 2,
-        perplexity: float = 30.0,
-        learning_rate: float = 200.0,
-        n_iter: int = 1000
-    ) -> np.ndarray:
-        """
-        Apply t-SNE for visualization.
-        
-        Args:
-            data: Input data
-            n_components: Number of dimensions (2 or 3)
-            perplexity: t-SNE perplexity parameter
-            learning_rate: Learning rate
-            n_iter: Number of iterations
-            
-        Returns:
-            t-SNE embedding
-        """
-        self.logger.info(f"Applying t-SNE: {data.shape[1]} → {n_components}D")
-        
-        tsne = TSNE(
-            n_components=n_components,
-            perplexity=perplexity,
-            learning_rate=learning_rate,
-            n_iter=n_iter,
-            random_state=self.random_state,
-            n_jobs=self.n_jobs
-        )
-        embedding = tsne.fit_transform(data)
-        
-        self.embeddings['tsne'] = embedding
-        self.logger.info(f"t-SNE completed: KL divergence = {tsne.kl_divergence_:.4f}")
-        
-        return embedding
-    
-    def apply_umap(
-        self,
-        data: np.ndarray,
-        n_components: int = 2,
-        n_neighbors: int = 15,
-        min_dist: float = 0.1,
-        metric: str = "euclidean"
-    ) -> Optional[np.ndarray]:
-        """
-        Apply UMAP for visualization.
-        
-        Args:
-            data: Input data
-            n_components: Number of dimensions (2 or 3)
-            n_neighbors: Number of neighbors
-            min_dist: Minimum distance
-            metric: Distance metric
-            
-        Returns:
-            UMAP embedding or None if UMAP not available
-        """
-        if not UMAP_AVAILABLE:
-            self.logger.warning("UMAP not installed. Skipping UMAP embedding.")
-            return None
-        
-        self.logger.info(f"Applying UMAP: {data.shape[1]} → {n_components}D")
-        
-        reducer = umap.UMAP(
-            n_components=n_components,
-            n_neighbors=n_neighbors,
-            min_dist=min_dist,
-            metric=metric,
-            random_state=self.random_state
-        )
-        embedding = reducer.fit_transform(data)
-        
-        self.embeddings['umap'] = embedding
-        self.logger.info("UMAP completed")
-        
-        return embedding
+        logger.info(f"ClusteringPipeline initialized")
+        logger.info(f"  Samples: {self.n_samples}")
+        logger.info(f"  Features: {self.n_features}")
+        if sample_labels is not None:
+            n_real = (sample_labels == 0).sum()
+            n_synthetic = (sample_labels == 1).sum()
+            logger.info(f"  Real samples: {n_real}")
+            logger.info(f"  Synthetic samples: {n_synthetic}")
     
     def kmeans_clustering(
         self,
-        data: np.ndarray,
-        n_clusters: int,
+        n_clusters: int = 3,
         n_init: int = 10,
-        max_iter: int = 300
-    ) -> Tuple[np.ndarray, KMeans]:
+        max_iter: int = 300,
+        **kwargs
+    ) -> Dict:
         """
-        Apply K-Means clustering.
+        Perform K-Means clustering.
         
         Args:
-            data: Input data
             n_clusters: Number of clusters
             n_init: Number of initializations
             max_iter: Maximum iterations
+            **kwargs: Additional KMeans parameters
             
         Returns:
-            Tuple of (cluster labels, fitted model)
+            Dictionary with cluster assignments and model info
         """
-        self.logger.info(f"Running K-Means with k={n_clusters}")
+        logger.info(f"Running K-Means clustering (k={n_clusters})...")
         
-        kmeans = KMeans(
+        model = KMeans(
             n_clusters=n_clusters,
             n_init=n_init,
             max_iter=max_iter,
             random_state=self.random_state,
-            n_jobs=self.n_jobs
+            **kwargs
         )
-        labels = kmeans.fit_predict(data)
         
-        self.logger.info(f"K-Means completed: inertia={kmeans.inertia_:.4f}")
+        cluster_labels = model.fit_predict(self.data_scaled)
         
-        model_key = f'kmeans_k{n_clusters}'
-        self.models[model_key] = kmeans
-        self.labels[model_key] = labels
+        result = {
+            'algorithm': 'kmeans',
+            'n_clusters': n_clusters,
+            'labels': cluster_labels,
+            'inertia': float(model.inertia_),
+            'n_iter': int(model.n_iter_),
+            'cluster_centers': model.cluster_centers_,
+            'model': model
+        }
         
-        return labels, kmeans
+        # Count samples per cluster
+        unique, counts = np.unique(cluster_labels, return_counts=True)
+        result['cluster_sizes'] = dict(zip(unique.tolist(), counts.tolist()))
+        
+        logger.info(f"✓ K-Means complete")
+        logger.info(f"  Inertia: {model.inertia_:.2f}")
+        logger.info(f"  Iterations: {model.n_iter_}")
+        logger.info(f"  Cluster sizes: {result['cluster_sizes']}")
+        
+        return result
     
     def hierarchical_clustering(
         self,
-        data: np.ndarray,
-        n_clusters: int,
-        linkage: str = "ward",
-        metric: str = "euclidean"
-    ) -> Tuple[np.ndarray, AgglomerativeClustering]:
+        n_clusters: int = 3,
+        linkage: str = 'ward',
+        **kwargs
+    ) -> Dict:
         """
-        Apply hierarchical clustering.
+        Perform Hierarchical (Agglomerative) clustering.
         
         Args:
-            data: Input data
             n_clusters: Number of clusters
-            linkage: Linkage method (ward, complete, average)
-            metric: Distance metric
+            linkage: Linkage criterion ('ward', 'complete', 'average', 'single')
+            **kwargs: Additional AgglomerativeClustering parameters
             
         Returns:
-            Tuple of (cluster labels, fitted model)
+            Dictionary with cluster assignments and model info
         """
-        self.logger.info(f"Running Hierarchical clustering: k={n_clusters}, linkage={linkage}")
+        logger.info(f"Running Hierarchical clustering (k={n_clusters}, linkage={linkage})...")
         
-        hierarchical = AgglomerativeClustering(
+        model = AgglomerativeClustering(
             n_clusters=n_clusters,
             linkage=linkage,
-            metric=metric if linkage != 'ward' else 'euclidean'
+            **kwargs
         )
-        labels = hierarchical.fit_predict(data)
         
-        self.logger.info("Hierarchical clustering completed")
+        cluster_labels = model.fit_predict(self.data_scaled)
         
-        model_key = f'hierarchical_k{n_clusters}_{linkage}'
-        self.models[model_key] = hierarchical
-        self.labels[model_key] = labels
+        result = {
+            'algorithm': 'hierarchical',
+            'n_clusters': n_clusters,
+            'linkage': linkage,
+            'labels': cluster_labels,
+            'n_leaves': int(model.n_leaves_),
+            'n_connected_components': int(model.n_connected_components_),
+            'model': model
+        }
         
-        return labels, hierarchical
+        # Count samples per cluster
+        unique, counts = np.unique(cluster_labels, return_counts=True)
+        result['cluster_sizes'] = dict(zip(unique.tolist(), counts.tolist()))
+        
+        logger.info(f"✓ Hierarchical clustering complete")
+        logger.info(f"  Cluster sizes: {result['cluster_sizes']}")
+        
+        return result
     
     def spectral_clustering(
         self,
-        data: np.ndarray,
-        n_clusters: int,
-        affinity: str = "rbf",
-        gamma: float = 1.0,
-        n_neighbors: int = 10
-    ) -> Tuple[np.ndarray, SpectralClustering]:
+        n_clusters: int = 3,
+        affinity: str = 'rbf',
+        n_neighbors: int = 10,
+        **kwargs
+    ) -> Dict:
         """
-        Apply spectral clustering.
+        Perform Spectral clustering.
         
         Args:
-            data: Input data
             n_clusters: Number of clusters
-            affinity: Affinity method (rbf, nearest_neighbors)
-            gamma: Kernel coefficient for rbf
-            n_neighbors: Number of neighbors
+            affinity: Affinity metric ('rbf', 'nearest_neighbors', 'precomputed')
+            n_neighbors: Number of neighbors for nearest_neighbors affinity
+            **kwargs: Additional SpectralClustering parameters
             
         Returns:
-            Tuple of (cluster labels, fitted model)
+            Dictionary with cluster assignments and model info
         """
-        self.logger.info(f"Running Spectral clustering: k={n_clusters}, affinity={affinity}")
+        logger.info(f"Running Spectral clustering (k={n_clusters}, affinity={affinity})...")
         
-        if affinity == "nearest_neighbors":
-            spectral = SpectralClustering(
-                n_clusters=n_clusters,
-                affinity=affinity,
-                n_neighbors=n_neighbors,
-                random_state=self.random_state,
-                n_jobs=self.n_jobs
-            )
-        else:
-            spectral = SpectralClustering(
-                n_clusters=n_clusters,
-                affinity=affinity,
-                gamma=gamma,
-                random_state=self.random_state,
-                n_jobs=self.n_jobs
-            )
+        model = SpectralClustering(
+            n_clusters=n_clusters,
+            affinity=affinity,
+            n_neighbors=n_neighbors if affinity == 'nearest_neighbors' else None,
+            random_state=self.random_state,
+            **kwargs
+        )
         
-        labels = spectral.fit_predict(data)
+        cluster_labels = model.fit_predict(self.data_scaled)
         
-        self.logger.info("Spectral clustering completed")
+        result = {
+            'algorithm': 'spectral',
+            'n_clusters': n_clusters,
+            'affinity': affinity,
+            'labels': cluster_labels,
+            'model': model
+        }
         
-        model_key = f'spectral_k{n_clusters}_{affinity}'
-        self.models[model_key] = spectral
-        self.labels[model_key] = labels
+        # Count samples per cluster
+        unique, counts = np.unique(cluster_labels, return_counts=True)
+        result['cluster_sizes'] = dict(zip(unique.tolist(), counts.tolist()))
         
-        return labels, spectral
+        logger.info(f"✓ Spectral clustering complete")
+        logger.info(f"  Cluster sizes: {result['cluster_sizes']}")
+        
+        return result
     
     def dbscan_clustering(
         self,
-        data: np.ndarray,
         eps: float = 0.5,
         min_samples: int = 5,
-        metric: str = "euclidean"
-    ) -> Tuple[np.ndarray, DBSCAN]:
+        **kwargs
+    ) -> Dict:
         """
-        Apply DBSCAN clustering.
+        Perform DBSCAN (density-based) clustering.
         
         Args:
-            data: Input data
             eps: Maximum distance between samples
-            min_samples: Minimum samples in neighborhood
-            metric: Distance metric
+            min_samples: Minimum samples in a neighborhood
+            **kwargs: Additional DBSCAN parameters
             
         Returns:
-            Tuple of (cluster labels, fitted model)
+            Dictionary with cluster assignments and model info
         """
-        self.logger.info(f"Running DBSCAN: eps={eps}, min_samples={min_samples}")
+        logger.info(f"Running DBSCAN clustering (eps={eps}, min_samples={min_samples})...")
         
-        dbscan = DBSCAN(
+        model = DBSCAN(
             eps=eps,
             min_samples=min_samples,
-            metric=metric,
-            n_jobs=self.n_jobs
+            **kwargs
         )
-        labels = dbscan.fit_predict(data)
         
-        n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
-        n_noise = list(labels).count(-1)
+        cluster_labels = model.fit_predict(self.data_scaled)
         
-        self.logger.info(f"DBSCAN completed: {n_clusters} clusters, {n_noise} noise points")
+        # Count clusters (excluding noise points labeled as -1)
+        unique_labels = np.unique(cluster_labels)
+        n_clusters = len(unique_labels[unique_labels >= 0])
+        n_noise = (cluster_labels == -1).sum()
         
-        model_key = f'dbscan_eps{eps}_min{min_samples}'
-        self.models[model_key] = dbscan
-        self.labels[model_key] = labels
+        result = {
+            'algorithm': 'dbscan',
+            'eps': eps,
+            'min_samples': min_samples,
+            'n_clusters': n_clusters,
+            'n_noise_points': int(n_noise),
+            'labels': cluster_labels,
+            'model': model
+        }
         
-        return labels, dbscan
+        # Count samples per cluster
+        unique, counts = np.unique(cluster_labels, return_counts=True)
+        result['cluster_sizes'] = dict(zip(unique.tolist(), counts.tolist()))
+        
+        logger.info(f"✓ DBSCAN complete")
+        logger.info(f"  Clusters found: {n_clusters}")
+        logger.info(f"  Noise points: {n_noise}")
+        logger.info(f"  Cluster sizes: {result['cluster_sizes']}")
+        
+        return result
     
     def run_multiple_k(
         self,
-        data: np.ndarray,
-        algorithm: str,
-        k_range: List[int],
+        algorithm: str = 'kmeans',
+        k_range: List[int] = [2, 3, 4, 5, 6, 7, 8, 9, 10],
         **kwargs
-    ) -> Dict[int, Tuple[np.ndarray, object]]:
+    ) -> Dict[int, Dict]:
         """
-        Run clustering algorithm for multiple k values.
+        Run clustering with multiple k values.
         
         Args:
-            data: Input data
-            algorithm: Clustering algorithm (kmeans, hierarchical, spectral)
-            k_range: List of k values to test
-            **kwargs: Additional parameters for the algorithm
+            algorithm: Clustering algorithm ('kmeans', 'hierarchical', 'spectral')
+            k_range: Range of k values to test
+            **kwargs: Algorithm-specific parameters
             
         Returns:
-            Dictionary mapping k to (labels, model)
+            Dictionary mapping k to clustering results
         """
+        logger.info(f"\n{'='*80}")
+        logger.info(f"Running {algorithm} for k in {k_range}")
+        logger.info(f"{'='*80}")
+        
         results = {}
         
         for k in k_range:
-            self.logger.info(f"\nTesting k={k} with {algorithm}")
+            logger.info(f"\nTesting k={k}...")
             
-            if algorithm == "kmeans":
-                labels, model = self.kmeans_clustering(data, k, **kwargs)
-            elif algorithm == "hierarchical":
-                labels, model = self.hierarchical_clustering(data, k, **kwargs)
-            elif algorithm == "spectral":
-                labels, model = self.spectral_clustering(data, k, **kwargs)
+            if algorithm == 'kmeans':
+                result = self.kmeans_clustering(n_clusters=k, **kwargs)
+            elif algorithm == 'hierarchical':
+                result = self.hierarchical_clustering(n_clusters=k, **kwargs)
+            elif algorithm == 'spectral':
+                result = self.spectral_clustering(n_clusters=k, **kwargs)
             else:
                 raise ValueError(f"Unknown algorithm: {algorithm}")
             
-            results[k] = (labels, model)
+            results[k] = result
         
+        logger.info(f"\n✓ Completed {len(k_range)} clustering runs")
         return results
     
-    def get_model(self, model_key: str):
-        """Get fitted model by key."""
-        return self.models.get(model_key)
+    def extract_real_sample_clusters(
+        self,
+        cluster_labels: np.ndarray
+    ) -> np.ndarray:
+        """
+        Extract cluster assignments for real samples only (when using augmented data).
+        
+        Args:
+            cluster_labels: Cluster labels for all samples (real + synthetic)
+            
+        Returns:
+            Cluster labels for real samples only
+        """
+        if self.sample_labels is None:
+            logger.warning("No sample labels provided, returning all cluster labels")
+            return cluster_labels
+        
+        real_mask = self.sample_labels == 0
+        real_cluster_labels = cluster_labels[real_mask]
+        
+        logger.info(f"Extracted clusters for {len(real_cluster_labels)} real samples")
+        return real_cluster_labels
     
-    def get_labels(self, model_key: str) -> Optional[np.ndarray]:
-        """Get cluster labels by key."""
-        return self.labels.get(model_key)
-    
-    def get_embedding(self, embedding_type: str) -> Optional[np.ndarray]:
-        """Get embedding by type (pca, tsne, umap)."""
-        return self.embeddings.get(embedding_type)
+    def apply_pca_before_clustering(
+        self,
+        n_components: int = 50,
+        explained_variance_threshold: float = 0.95
+    ) -> np.ndarray:
+        """
+        Apply PCA dimensionality reduction before clustering.
+        
+        Args:
+            n_components: Number of principal components (or max components)
+            explained_variance_threshold: Use enough components to explain this variance
+            
+        Returns:
+            PCA-transformed data
+        """
+        logger.info(f"Applying PCA before clustering...")
+        
+        pca = PCA(n_components=n_components, random_state=self.random_state)
+        data_pca = pca.fit_transform(self.data_scaled)
+        
+        # Find number of components for threshold
+        cumsum_var = np.cumsum(pca.explained_variance_ratio_)
+        n_components_needed = np.argmax(cumsum_var >= explained_variance_threshold) + 1
+        
+        logger.info(f"  Components: {n_components}")
+        logger.info(f"  Variance explained: {cumsum_var[-1]*100:.2f}%")
+        logger.info(f"  Components for {explained_variance_threshold*100}% variance: {n_components_needed}")
+        
+        # Update data
+        self.data_scaled = data_pca
+        self.n_features = data_pca.shape[1]
+        self.pca_model = pca
+        
+        return data_pca
 
 
+class ClusteringComparison:
+    """
+    Compare clustering results across different configurations.
+    """
+    
+    def __init__(self):
+        self.results = {}
+    
+    def add_result(
+        self,
+        name: str,
+        result: Dict
+    ):
+        """
+        Add a clustering result for comparison.
+        
+        Args:
+            name: Identifier for this result (e.g., 'baseline_kmeans_k3')
+            result: Clustering result dictionary
+        """
+        self.results[name] = result
+        logger.info(f"Added result: {name}")
+    
+    def compare_cluster_sizes(self) -> Dict:
+        """
+        Compare cluster size distributions across results.
+        
+        Returns:
+            Dictionary of cluster sizes for each result
+        """
+        comparison = {}
+        
+        for name, result in self.results.items():
+            comparison[name] = result['cluster_sizes']
+        
+        return comparison
+    
+    def find_optimal_k(
+        self,
+        metric_name: str,
+        maximize: bool = True
+    ) -> Tuple[int, float]:
+        """
+        Find optimal k based on a metric.
+        
+        Args:
+            metric_name: Name of metric to optimize
+            maximize: Whether to maximize (True) or minimize (False)
+            
+        Returns:
+            Optimal k and its metric value
+        """
+        metric_values = {}
+        
+        for name, result in self.results.items():
+            if 'n_clusters' in result and 'metrics' in result:
+                k = result['n_clusters']
+                if metric_name in result['metrics']:
+                    metric_values[k] = result['metrics'][metric_name]
+        
+        if not metric_values:
+            logger.warning(f"No results with metric '{metric_name}' found")
+            return None, None
+        
+        if maximize:
+            optimal_k = max(metric_values, key=metric_values.get)
+        else:
+            optimal_k = min(metric_values, key=metric_values.get)
+        
+        optimal_value = metric_values[optimal_k]
+        
+        logger.info(f"Optimal k={optimal_k} for {metric_name}: {optimal_value:.4f}")
+        return optimal_k, optimal_value
+    
+    def save_results(self, save_path: Union[str, Path]):
+        """
+        Save all clustering results to JSON.
+        
+        Args:
+            save_path: Path to save results
+        """
+        save_path = Path(save_path)
+        save_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Convert numpy arrays to lists for JSON serialization
+        results_serializable = {}
+        for name, result in self.results.items():
+            result_copy = result.copy()
+            
+            # Convert arrays to lists
+            if 'labels' in result_copy:
+                result_copy['labels'] = result_copy['labels'].tolist()
+            if 'cluster_centers' in result_copy:
+                result_copy['cluster_centers'] = result_copy['cluster_centers'].tolist()
+            
+            # Remove model objects (not serializable)
+            result_copy.pop('model', None)
+            
+            results_serializable[name] = result_copy
+        
+        with open(save_path, 'w') as f:
+            json.dump(results_serializable, f, indent=2)
+        
+        logger.info(f"Results saved to: {save_path}")
+
+
+# Example usage
 if __name__ == "__main__":
-    # Test the clustering pipeline
-    print("Testing ClusteringPipeline...")
+    print("Clustering Algorithms Module - Phase 3 & 7")
+    print("="*80)
     
-    # Generate synthetic data
-    np.random.seed(42)
-    data = np.random.randn(100, 50)
+    print("\nExample usage:")
+    print("""
+    import numpy as np
+    from backend.clustering.algorithms import ClusteringPipeline
     
-    pipeline = ClusteringPipeline(random_state=42)
+    # Load augmented data
+    aug_data = np.load('data/synthetic/augmented_add_1x.npz')
+    X = aug_data['data']
+    sample_labels = aug_data['labels']  # 0=real, 1=synthetic
     
-    # Test K-Means
-    labels, model = pipeline.kmeans_clustering(data, n_clusters=3)
-    print(f"K-Means labels: {len(set(labels))} clusters")
+    # Initialize pipeline
+    pipeline = ClusteringPipeline(X, sample_labels=sample_labels)
     
-    # Test Hierarchical
-    labels, model = pipeline.hierarchical_clustering(data, n_clusters=3)
-    print(f"Hierarchical labels: {len(set(labels))} clusters")
+    # Optional: Apply PCA
+    # pipeline.apply_pca_before_clustering(n_components=50)
     
-    # Test PCA
-    pca_data, pca_model = pipeline.apply_pca(data, n_components=10)
-    print(f"PCA shape: {pca_data.shape}")
+    # Run K-Means for multiple k values
+    results = pipeline.run_multiple_k(
+        algorithm='kmeans',
+        k_range=[2, 3, 4, 5, 6, 7, 8, 9, 10]
+    )
     
-    print("\n✓ ClusteringPipeline test complete!")
+    # Extract real sample clusters (exclude synthetic)
+    for k, result in results.items():
+        real_labels = pipeline.extract_real_sample_clusters(result['labels'])
+        print(f"k={k}: {len(real_labels)} real samples clustered")
+    
+    # Run other algorithms
+    hierarchical_result = pipeline.hierarchical_clustering(n_clusters=3)
+    spectral_result = pipeline.spectral_clustering(n_clusters=3)
+    """)
+    
+    print("\n" + "="*80)
+    print("Module ready for use!")
