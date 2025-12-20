@@ -1,0 +1,159 @@
+# Clustering Configuration for TCGA-LUAD
+# Phase 3: Baseline Clustering
+
+# Input Data
+input:
+  processed_data_file: "data/processed/luad_processed.pt"
+  feature_names_file: "data/processed/feature_names.txt"
+  sample_ids_file: "data/processed/sample_ids.txt"
+  metadata_file: "data/processed/metadata.json"
+
+# Dimensionality Reduction for Visualization
+dimensionality_reduction:
+  # PCA for initial reduction (if needed)
+  pca:
+    enabled: true
+    n_components: 50  # Reduce to 50 dimensions before clustering
+    whiten: false
+    random_state: 42
+  
+  # t-SNE for 2D/3D visualization
+  tsne:
+    enabled: true
+    n_components: 2  # 2D or 3D
+    perplexity: 30  # 5-50 recommended
+    learning_rate: 200  # 10-1000
+    n_iter: 1000
+    random_state: 42
+  
+  # UMAP for visualization (alternative to t-SNE)
+  umap:
+    enabled: true
+    n_components: 2  # 2D or 3D
+    n_neighbors: 15  # 2-100
+    min_dist: 0.1  # 0.0-0.99
+    metric: "euclidean"
+    random_state: 42
+
+# Clustering Algorithms
+clustering:
+  # K-Means
+  kmeans:
+    enabled: true
+    n_clusters_range: [2, 3, 4, 5, 6, 7, 8, 9, 10]  # Test multiple k values
+    n_init: 10  # Number of initializations
+    max_iter: 300
+    random_state: 42
+    algorithm: "lloyd"  # lloyd, elkan
+  
+  # Hierarchical Clustering
+  hierarchical:
+    enabled: true
+    n_clusters_range: [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    linkage_methods: ["ward", "complete", "average"]  # Linkage methods to test
+    metric: "euclidean"  # Distance metric
+  
+  # Spectral Clustering
+  spectral:
+    enabled: true
+    n_clusters_range: [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    affinity: "rbf"  # rbf, nearest_neighbors, precomputed
+    gamma: 1.0  # Kernel coefficient for rbf
+    n_neighbors: 10  # For nearest_neighbors affinity
+    random_state: 42
+  
+  # DBSCAN (density-based, optional)
+  dbscan:
+    enabled: false  # Usually works better with labeled data
+    eps_range: [0.5, 1.0, 1.5, 2.0]  # Epsilon values to test
+    min_samples_range: [5, 10, 15, 20]  # Minimum samples to test
+    metric: "euclidean"
+
+# Optimal Cluster Selection Methods
+optimal_clusters:
+  # Elbow method (WCSS)
+  elbow:
+    enabled: true
+  
+  # Silhouette analysis
+  silhouette:
+    enabled: true
+    min_clusters: 2
+    max_clusters: 10
+  
+  # Gap statistic
+  gap_statistic:
+    enabled: false  # Computationally expensive
+    n_refs: 10  # Number of reference datasets
+    max_clusters: 10
+
+# Evaluation Metrics
+evaluation:
+  # Unsupervised metrics (no labels needed)
+  unsupervised:
+    - silhouette_score  # Higher is better (-1 to 1)
+    - davies_bouldin_index  # Lower is better
+    - calinski_harabasz_score  # Higher is better
+    - within_cluster_sum_squares  # Lower is better
+  
+  # External validation (if labels available)
+  external:
+    enabled: false  # Set to true if you have ground truth labels
+    labels_file: null  # Path to labels file (if available)
+    metrics:
+      - adjusted_rand_index  # Range: -1 to 1 (1 is perfect)
+      - normalized_mutual_info  # Range: 0 to 1 (1 is perfect)
+      - fowlkes_mallows_score  # Range: 0 to 1
+
+# Visualization Settings
+visualization:
+  # Save plots
+  save_plots: true
+  plot_format: "png"  # png, pdf, svg
+  dpi: 300
+  
+  # Plot types
+  plots:
+    - pca_2d  # 2D PCA scatter
+    - pca_3d  # 3D PCA scatter
+    - tsne_2d  # 2D t-SNE scatter
+    - umap_2d  # 2D UMAP scatter
+    - elbow_curve  # Elbow method
+    - silhouette_plot  # Silhouette analysis
+    - dendrogram  # Hierarchical clustering
+    - heatmap  # Gene expression heatmap per cluster
+  
+  # Color schemes
+  colormap: "tab10"  # For cluster colors
+  heatmap_colormap: "viridis"  # For heatmaps
+
+# Output Configuration
+output:
+  results_dir: "results/baseline"
+  baseline_dir: "models/baseline"
+  visualizations_dir: "results/baseline/baseline_visualizations"
+  
+  # File names
+  kmeans_results: "kmeans_metrics.json"
+  hierarchical_results: "hierarchical_metrics.json"
+  spectral_results: "spectral_metrics.json"
+  dbscan_results: "dbscan_metrics.json"
+  comparison_table: "metrics_comparison.csv"
+  baseline_report: "baseline_clustering_results.json"
+  optimal_clusters_file: "optimal_clusters.json"
+
+# Reproducibility
+reproducibility:
+  random_seed: 42
+  save_random_state: true
+
+# Logging
+logging:
+  level: "INFO"
+  save_logs: true
+  log_dir: "logs/clustering"
+
+# Performance
+performance:
+  n_jobs: -1  # Use all CPU cores (-1)
+  verbose: 1  # Verbosity level
