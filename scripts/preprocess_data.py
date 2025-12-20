@@ -23,6 +23,22 @@ from backend.config import (
 from backend.utils import setup_logging, save_json, set_random_seeds
 
 
+def convert_numpy_types(obj):
+    """Convert numpy types to Python types for JSON serialization."""
+    if isinstance(obj, np.integer):
+        return int(obj)
+    elif isinstance(obj, np.floating):
+        return float(obj)
+    elif isinstance(obj, np.ndarray):
+        return obj.tolist()
+    elif isinstance(obj, dict):
+        return {k: convert_numpy_types(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [convert_numpy_types(item) for item in obj]
+    else:
+        return obj
+
+
 def load_config(config_path: Path) -> dict:
     """Load configuration from YAML file."""
     with open(config_path, 'r') as f:
@@ -154,6 +170,7 @@ def preprocess_luad_data(config: dict, logger):
     
     # Save metadata
     metadata_file = output_dir / config['output']['metadata_file']
+    full_metadata = convert_numpy_types(full_metadata)
     save_json(full_metadata, metadata_file)
     logger.info(f"Saved metadata: {metadata_file}")
     
@@ -189,6 +206,7 @@ def preprocess_luad_data(config: dict, logger):
         }
     
     report_file = output_dir / config['output']['preprocessing_report']
+    report = convert_numpy_types(report)
     save_json(report, report_file)
     logger.info(f"Saved preprocessing report: {report_file}")
     

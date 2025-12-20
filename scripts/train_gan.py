@@ -56,7 +56,7 @@ def main():
     # Load data
     data_file = Path(config['input']['processed_data_file'])
     data_tensor = torch.load(data_file)
-    data = data_tensor.to(device)
+    data = data_tensor  # Keep on CPU for DataLoader
     
     logger.info(f"Loaded data: {data.shape}")
     
