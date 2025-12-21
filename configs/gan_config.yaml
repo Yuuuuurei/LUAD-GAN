@@ -13,21 +13,21 @@ architecture:
   
   # Generator
   generator:
-    latent_dim: 128  # Size of latent vector z
-    hidden_dims: [256, 512, 1024]  # Hidden layer dimensions
+    latent_dim: 512  # FURTHER INCREASED FROM 256
+    hidden_dims: [1024, 2048, 4096]  # EVEN LARGER CAPACITY
     activation: "leaky_relu"  # leaky_relu, relu, elu
     leaky_slope: 0.2  # For LeakyReLU
     use_batch_norm: true  # BatchNorm after each layer
-    output_activation: "tanh"  # tanh, linear, sigmoid
-    dropout: 0.0  # Dropout rate (0 = no dropout)
+    output_activation: "linear"  # tanh, linear, sigmoid - CHANGED FROM TANH
+    dropout: 0.0  # DROPOUT REMOVED - WAS CAUSING MODE COLLAPSE
   
   # Critic (Discriminator)
   critic:
-    hidden_dims: [512, 256, 128]  # Hidden layer dimensions
+    hidden_dims: [4096, 2048, 1024]  # MATCHED TO GENERATOR CAPACITY
     activation: "leaky_relu"  # leaky_relu, relu, elu
     leaky_slope: 0.2  # For LeakyReLU
     use_batch_norm: false  # No BatchNorm for critic (WGAN-GP requirement)
-    dropout: 0.3  # Dropout rate
+    dropout: 0.0  # DROPOUT REMOVED FROM CRITIC TOO
     spectral_norm: false  # Alternative to gradient penalty
   
   # Weight Initialization
@@ -38,21 +38,21 @@ architecture:
 # Training Configuration
 training:
   # Basic settings
-  num_epochs: 500
-  batch_size: 64
+  num_epochs: 2000  # INCREASED FROM 1000
+  batch_size: 16  # DECREASED FROM 32 FOR MORE FREQUENT UPDATES
   n_critic: 5  # Train critic n times per generator update
   
   # Optimizer
   optimizer:
     generator:
       type: "adam"  # adam, rmsprop, sgd
-      learning_rate: 0.0001
+      learning_rate: 0.00005  # DECREASED FROM 0.0001 FOR MORE STABLE TRAINING
       betas: [0.5, 0.9]  # For Adam
       weight_decay: 0.0
     
     critic:
       type: "adam"
-      learning_rate: 0.0001
+      learning_rate: 0.00005  # DECREASED FROM 0.0001
       betas: [0.5, 0.9]
       weight_decay: 0.0
   
@@ -65,7 +65,7 @@ training:
   
   # WGAN-GP specific
   wgan_gp:
-    gradient_penalty_weight: 10  # Lambda for gradient penalty
+    gradient_penalty_weight: 20  # INCREASED FROM 10 FOR STRONGER CONSTRAINT
     clip_value: null  # Not used in WGAN-GP (use gradient penalty instead)
   
   # Regularization
