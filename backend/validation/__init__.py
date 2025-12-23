@@ -2,9 +2,9 @@
 Validation module for synthetic data quality.
 """
 
-from .quality_metrics import QualityValidator, validate_synthetic_data
+from .quality_metrics import QualityMetrics, validate_synthetic_data
 
 __all__ = [
-    'QualityValidator',
+    'QualityMetrics',
     'validate_synthetic_data'
 ]

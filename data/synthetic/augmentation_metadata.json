@@ -1,0 +1,8 @@
+{
+  "strategy": "combine",
+  "augmentation_ratio": 1.0,
+  "n_real": 528,
+  "n_synthetic": 528,
+  "total_samples": 1056,
+  "n_features": 2000
+}

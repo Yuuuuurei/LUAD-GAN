@@ -492,3 +492,18 @@ if __name__ == "__main__":
     
     print("\n" + "="*80)
     print("Module ready for use!")
+
+
+def validate_synthetic_data(real_data: np.ndarray, synthetic_data: np.ndarray) -> Dict:
+    """
+    Validate synthetic data quality using comprehensive metrics.
+    
+    Args:
+        real_data: Real data samples (n_samples, n_features)
+        synthetic_data: Synthetic data samples (n_samples, n_features)
+        
+    Returns:
+        Dictionary containing quality metrics and score
+    """
+    validator = QualityMetrics(real_data, synthetic_data)
+    return validator.compute_all_metrics()

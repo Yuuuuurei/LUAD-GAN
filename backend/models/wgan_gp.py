@@ -23,7 +23,9 @@ class WGAN_GP(nn.Module):
         latent_dim: int = 128,
         generator_config: Optional[dict] = None,
         critic_config: Optional[dict] = None,
-        gradient_penalty_weight: float = 10.0
+        gradient_penalty_weight: float = 10.0,
+        variance_reg_config: Optional[dict] = None,
+        feature_matching_config: Optional[dict] = None
     ):
         """
         Initialize WGAN-GP.
@@ -34,12 +36,17 @@ class WGAN_GP(nn.Module):
             generator_config: Configuration for Generator
             critic_config: Configuration for Critic
             gradient_penalty_weight: Weight for gradient penalty (lambda)
+            variance_reg_config: Configuration for variance regularization
+            feature_matching_config: Configuration for feature matching
         """
         super(WGAN_GP, self).__init__()
         
         self.num_features = num_features
         self.latent_dim = latent_dim
         self.gradient_penalty_weight = gradient_penalty_weight
+        self.variance_reg_config = variance_reg_config or {'enabled': False}
+        self.feature_matching_config = feature_matching_config or {'enabled': False}
+        self.feature_matching_config = feature_matching_config or {'enabled': False}
         
         # Default configurations
         if generator_config is None:
@@ -83,12 +90,13 @@ class WGAN_GP(nn.Module):
         """
         return self.generator.generate(n_samples, device)
     
-    def compute_generator_loss(self, fake_samples: torch.Tensor) -> torch.Tensor:
+    def compute_generator_loss(self, fake_samples: torch.Tensor, real_samples: Optional[torch.Tensor] = None) -> torch.Tensor:
         """
         Compute generator loss (WGAN).
         
         Args:
             fake_samples: Generated samples
+            real_samples: Real samples (optional, for variance regularization)
             
         Returns:
             Generator loss
@@ -98,7 +106,83 @@ class WGAN_GP(nn.Module):
         fake_scores = self.critic(fake_samples)
         generator_loss = -fake_scores.mean()
         
+        # Add regularization if enabled and real_samples provided
+        if real_samples is not None:
+            if hasattr(self, 'variance_reg_config') and self.variance_reg_config.get('enabled', False):
+                var_loss = self._compute_variance_loss(fake_samples, real_samples)
+                var_weight = self.variance_reg_config['weight']
+                generator_loss = generator_loss + var_weight * var_loss
+            elif hasattr(self, 'feature_matching_config') and self.feature_matching_config.get('enabled', False):
+                fm_loss = self._compute_feature_matching_loss(fake_samples, real_samples)
+                fm_weight = self.feature_matching_config['weight']
+                generator_loss = generator_loss + fm_weight * fm_loss
+        
         return generator_loss
+    
+    def _compute_variance_loss(self, fake_samples: torch.Tensor, real_samples: torch.Tensor) -> torch.Tensor:
+        """
+        Compute variance regularization loss.
+        
+        Args:
+            fake_samples: Generated samples
+            real_samples: Real samples
+            
+        Returns:
+            Variance loss
+        """
+        import torch.nn.functional as F
+        
+        # Compute variance per feature
+        real_var = torch.var(real_samples, dim=0, unbiased=False)
+        fake_var = torch.var(fake_samples, dim=0, unbiased=False)
+        
+        # Target variance ratio
+        target_ratio = self.variance_reg_config.get('target_ratio', 1.0)
+        target_var = real_var * target_ratio
+        
+        # MSE loss between target and fake variances
+        var_loss = F.mse_loss(fake_var, target_var)
+        
+        return var_loss
+    
+    def _compute_feature_matching_loss(self, fake_samples: torch.Tensor, real_samples: torch.Tensor) -> torch.Tensor:
+        """
+        Compute feature matching loss.
+        Matches statistics of critic intermediate features between real and fake samples.
+        
+        Args:
+            fake_samples: Generated samples
+            real_samples: Real samples
+            
+        Returns:
+            Feature matching loss
+        """
+        import torch.nn.functional as F
+        
+        # Get intermediate features from critic
+        real_features = self.critic.get_intermediate_features(real_samples)
+        fake_features = self.critic.get_intermediate_features(fake_samples)
+        
+        # Compute loss based on configured layers
+        layers = self.feature_matching_config.get('layers', ['mean', 'std'])
+        total_loss = 0
+        
+        for layer_name in layers:
+            if layer_name == 'mean':
+                real_stat = torch.mean(real_features, dim=0)
+                fake_stat = torch.mean(fake_features, dim=0)
+            elif layer_name == 'std':
+                real_stat = torch.std(real_features, dim=0)
+                fake_stat = torch.std(fake_features, dim=0)
+            elif layer_name == 'var':
+                real_stat = torch.var(real_features, dim=0)
+                fake_stat = torch.var(fake_features, dim=0)
+            
+            # L2 loss between statistics
+            layer_loss = F.mse_loss(fake_stat, real_stat)
+            total_loss += layer_loss
+        
+        return total_loss
     
     def compute_critic_loss(
         self,
@@ -228,7 +312,9 @@ def create_wgan_gp_from_config(config: dict, num_features: int) -> WGAN_GP:
         latent_dim=gen_config['latent_dim'],
         generator_config=generator_config,
         critic_config=critic_cfg,
-        gradient_penalty_weight=config['training']['wgan_gp']['gradient_penalty_weight']
+        gradient_penalty_weight=config['training']['wgan_gp']['gradient_penalty_weight'],
+        variance_reg_config=config['training']['regularization'].get('variance_regularization'),
+        feature_matching_config=config['training']['regularization'].get('feature_matching')
     )
     
     return model

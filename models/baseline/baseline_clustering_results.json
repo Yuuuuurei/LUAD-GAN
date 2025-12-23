@@ -1,0 +1,827 @@
+{
+  "timestamp": "2025-12-21T00:06:13.300237",
+  "data_shape": [
+    528,
+    2000
+  ],
+  "clustering_data_shape": [
+    528,
+    50
+  ],
+  "optimal_clusters": {
+    "elbow_method": 6,
+    "silhouette_analysis": 3
+  },
+  "all_results": {
+    "kmeans_k2": {
+      "n_clusters": 2,
+      "n_noise": 0,
+      "wcss": 651695.0625,
+      "silhouette_score": 0.09804657101631165,
+      "davies_bouldin_index": 2.9489917814749655,
+      "calinski_harabasz_score": 57.83574295043945,
+      "k": 2,
+      "inertia": 651695.0625
+    },
+    "kmeans_k3": {
+      "n_clusters": 3,
+      "n_noise": 0,
+      "wcss": 607070.3125,
+      "silhouette_score": 0.11152539402246475,
+      "davies_bouldin_index": 2.3914058854043296,
+      "calinski_harabasz_score": 50.28048324584961,
+      "k": 3,
+      "inertia": 607070.375
+    },
+    "kmeans_k4": {
+      "n_clusters": 4,
+      "n_noise": 0,
+      "wcss": 570540.3125,
+      "silhouette_score": 0.08723784983158112,
+      "davies_bouldin_index": 2.3491186564285216,
+      "calinski_harabasz_score": 46.781986236572266,
+      "k": 4,
+      "inertia": 570540.3125
+    },
+    "kmeans_k5": {
+      "n_clusters": 5,
+      "n_noise": 0,
+      "wcss": 539017.3125,
+      "silhouette_score": 0.094940185546875,
+      "davies_bouldin_index": 2.264302918622528,
+      "calinski_harabasz_score": 44.71411895751953,
+      "k": 5,
+      "inertia": 539017.3125
+    },
+    "kmeans_k6": {
+      "n_clusters": 6,
+      "n_noise": 0,
+      "wcss": 515896.875,
+      "silhouette_score": 0.09073340892791748,
+      "davies_bouldin_index": 2.2851816041028457,
+      "calinski_harabasz_score": 41.98176956176758,
+      "k": 6,
+      "inertia": 515896.8125
+    },
+    "kmeans_k7": {
+      "n_clusters": 7,
+      "n_noise": 0,
+      "wcss": 495113.375,
+      "silhouette_score": 0.08757412433624268,
+      "davies_bouldin_index": 2.238481828961872,
+      "calinski_harabasz_score": 40.028560638427734,
+      "k": 7,
+      "inertia": 495113.375
+    },
+    "kmeans_k8": {
+      "n_clusters": 8,
+      "n_noise": 0,
+      "wcss": 479587.46875,
+      "silhouette_score": 0.09376402944326401,
+      "davies_bouldin_index": 2.108010195533118,
+      "calinski_harabasz_score": 37.75783157348633,
+      "k": 8,
+      "inertia": 479587.46875
+    },
+    "kmeans_k9": {
+      "n_clusters": 9,
+      "n_noise": 0,
+      "wcss": 467139.8125,
+      "silhouette_score": 0.08995866030454636,
+      "davies_bouldin_index": 2.1529475038235435,
+      "calinski_harabasz_score": 35.5819206237793,
+      "k": 9,
+      "inertia": 467139.75
+    },
+    "kmeans_k10": {
+      "n_clusters": 10,
+      "n_noise": 0,
+      "wcss": 456923.90625,
+      "silhouette_score": 0.09583590179681778,
+      "davies_bouldin_index": 2.1995853406351404,
+      "calinski_harabasz_score": 33.56004333496094,
+      "k": 10,
+      "inertia": 456923.96875
+    },
+    "hierarchical_k2_ward": {
+      "n_clusters": 2,
+      "n_noise": 0,
+      "wcss": 668800.0,
+      "silhouette_score": 0.08619347214698792,
+      "davies_bouldin_index": 3.314481370868056,
+      "calinski_harabasz_score": 42.903770446777344,
+      "k": 2,
+      "linkage": "ward"
+    },
+    "hierarchical_k3_ward": {
+      "n_clusters": 3,
+      "n_noise": 0,
+      "wcss": 621595.625,
+      "silhouette_score": 0.10233327001333237,
+      "davies_bouldin_index": 2.6270516632132384,
+      "calinski_harabasz_score": 42.97153091430664,
+      "k": 3,
+      "linkage": "ward"
+    },
+    "hierarchical_k4_ward": {
+      "n_clusters": 4,
+      "n_noise": 0,
+      "wcss": 585505.1875,
+      "silhouette_score": 0.10796947777271271,
+      "davies_bouldin_index": 2.3137897836662447,
+      "calinski_harabasz_score": 41.122013092041016,
+      "k": 4,
+      "linkage": "ward"
+    },
+    "hierarchical_k5_ward": {
+      "n_clusters": 5,
+      "n_noise": 0,
+      "wcss": 555609.4375,
+      "silhouette_score": 0.07555210590362549,
+      "davies_bouldin_index": 2.5135644300552333,
+      "calinski_harabasz_score": 39.474246978759766,
+      "k": 5,
+      "linkage": "ward"
+    },
+    "hierarchical_k6_ward": {
+      "n_clusters": 6,
+      "n_noise": 0,
+      "wcss": 534428.125,
+      "silhouette_score": 0.07576723396778107,
+      "davies_bouldin_index": 2.399013344498744,
+      "calinski_harabasz_score": 36.90597915649414,
+      "k": 6,
+      "linkage": "ward"
+    },
+    "hierarchical_k7_ward": {
+      "n_clusters": 7,
+      "n_noise": 0,
+      "wcss": 517644.0,
+      "silhouette_score": 0.07527312636375427,
+      "davies_bouldin_index": 2.4327125972541643,
+      "calinski_harabasz_score": 34.50684356689453,
+      "k": 7,
+      "linkage": "ward"
+    },
+    "hierarchical_k8_ward": {
+      "n_clusters": 8,
+      "n_noise": 0,
+      "wcss": 502170.46875,
+      "silhouette_score": 0.06659527122974396,
+      "davies_bouldin_index": 2.42462094909778,
+      "calinski_harabasz_score": 32.719146728515625,
+      "k": 8,
+      "linkage": "ward"
+    },
+    "hierarchical_k9_ward": {
+      "n_clusters": 9,
+      "n_noise": 0,
+      "wcss": 488857.0625,
+      "silhouette_score": 0.06546374410390854,
+      "davies_bouldin_index": 2.283737957985598,
+      "calinski_harabasz_score": 31.11916732788086,
+      "k": 9,
+      "linkage": "ward"
+    },
+    "hierarchical_k10_ward": {
+      "n_clusters": 10,
+      "n_noise": 0,
+      "wcss": 477276.4375,
+      "silhouette_score": 0.07073678076267242,
+      "davies_bouldin_index": 2.2376089300463655,
+      "calinski_harabasz_score": 29.674592971801758,
+      "k": 10,
+      "linkage": "ward"
+    },
+    "hierarchical_k2_complete": {
+      "n_clusters": 2,
+      "n_noise": 0,
+      "wcss": 676279.9375,
+      "silhouette_score": 0.2595118284225464,
+      "davies_bouldin_index": 1.5611459741593772,
+      "calinski_harabasz_score": 36.61149978637695,
+      "k": 2,
+      "linkage": "complete"
+    },
+    "hierarchical_k3_complete": {
+      "n_clusters": 3,
+      "n_noise": 0,
+      "wcss": 636436.125,
+      "silhouette_score": 0.0680096372961998,
+      "davies_bouldin_index": 3.0623789376045685,
+      "calinski_harabasz_score": 35.84849548339844,
+      "k": 3,
+      "linkage": "complete"
+    },
+    "hierarchical_k4_complete": {
+      "n_clusters": 4,
+      "n_noise": 0,
+      "wcss": 603243.625,
+      "silhouette_score": 0.0707012489438057,
+      "davies_bouldin_index": 2.668275229290322,
+      "calinski_harabasz_score": 34.776729583740234,
+      "k": 4,
+      "linkage": "complete"
+    },
+    "hierarchical_k5_complete": {
+      "n_clusters": 5,
+      "n_noise": 0,
+      "wcss": 594836.5625,
+      "silhouette_score": 0.06348554790019989,
+      "davies_bouldin_index": 2.473383877633804,
+      "calinski_harabasz_score": 28.248640060424805,
+      "k": 5,
+      "linkage": "complete"
+    },
+    "hierarchical_k6_complete": {
+      "n_clusters": 6,
+      "n_noise": 0,
+      "wcss": 573297.8125,
+      "silhouette_score": 0.0436481311917305,
+      "davies_bouldin_index": 2.7992556800753685,
+      "calinski_harabasz_score": 27.325410842895508,
+      "k": 6,
+      "linkage": "complete"
+    },
+    "hierarchical_k7_complete": {
+      "n_clusters": 7,
+      "n_noise": 0,
+      "wcss": 568930.6875,
+      "silhouette_score": 0.03919606655836105,
+      "davies_bouldin_index": 2.8748672777125814,
+      "calinski_harabasz_score": 23.568544387817383,
+      "k": 7,
+      "linkage": "complete"
+    },
+    "hierarchical_k8_complete": {
+      "n_clusters": 8,
+      "n_noise": 0,
+      "wcss": 550449.125,
+      "silhouette_score": 0.040115565061569214,
+      "davies_bouldin_index": 2.798654169882375,
+      "calinski_harabasz_score": 23.333986282348633,
+      "k": 8,
+      "linkage": "complete"
+    },
+    "hierarchical_k9_complete": {
+      "n_clusters": 9,
+      "n_noise": 0,
+      "wcss": 543205.25,
+      "silhouette_score": 0.04147610068321228,
+      "davies_bouldin_index": 2.650971860725367,
+      "calinski_harabasz_score": 21.514863967895508,
+      "k": 9,
+      "linkage": "complete"
+    },
+    "hierarchical_k10_complete": {
+      "n_clusters": 10,
+      "n_noise": 0,
+      "wcss": 506835.5,
+      "silhouette_score": 0.06266112625598907,
+      "davies_bouldin_index": 2.426479947866652,
+      "calinski_harabasz_score": 24.587257385253906,
+      "k": 10,
+      "linkage": "complete"
+    },
+    "hierarchical_k2_average": {
+      "n_clusters": 2,
+      "n_noise": 0,
+      "wcss": 676279.9375,
+      "silhouette_score": 0.2595118284225464,
+      "davies_bouldin_index": 1.5611459741593772,
+      "calinski_harabasz_score": 36.61149978637695,
+      "k": 2,
+      "linkage": "average"
+    },
+    "hierarchical_k3_average": {
+      "n_clusters": 3,
+      "n_noise": 0,
+      "wcss": 667493.625,
+      "silhouette_score": 0.2230209857225418,
+      "davies_bouldin_index": 1.500419989044266,
+      "calinski_harabasz_score": 21.966773986816406,
+      "k": 3,
+      "linkage": "average"
+    },
+    "hierarchical_k4_average": {
+      "n_clusters": 4,
+      "n_noise": 0,
+      "wcss": 663267.0,
+      "silhouette_score": 0.18689382076263428,
+      "davies_bouldin_index": 1.4581149295877402,
+      "calinski_harabasz_score": 15.822794914245605,
+      "k": 4,
+      "linkage": "average"
+    },
+    "hierarchical_k5_average": {
+      "n_clusters": 5,
+      "n_noise": 0,
+      "wcss": 659438.6875,
+      "silhouette_score": 0.17875580489635468,
+      "davies_bouldin_index": 1.3907087660014816,
+      "calinski_harabasz_score": 12.672281265258789,
+      "k": 5,
+      "linkage": "average"
+    },
+    "hierarchical_k6_average": {
+      "n_clusters": 6,
+      "n_noise": 0,
+      "wcss": 655877.375,
+      "silhouette_score": 0.17479977011680603,
+      "davies_bouldin_index": 1.3448084347123066,
+      "calinski_harabasz_score": 10.740260124206543,
+      "k": 6,
+      "linkage": "average"
+    },
+    "hierarchical_k7_average": {
+      "n_clusters": 7,
+      "n_noise": 0,
+      "wcss": 653303.875,
+      "silhouette_score": 0.11169806122779846,
+      "davies_bouldin_index": 1.4422003157228964,
+      "calinski_harabasz_score": 9.310320854187012,
+      "k": 7,
+      "linkage": "average"
+    },
+    "hierarchical_k8_average": {
+      "n_clusters": 8,
+      "n_noise": 0,
+      "wcss": 651681.4375,
+      "silhouette_score": 0.07760646194219589,
+      "davies_bouldin_index": 1.1987772426389895,
+      "calinski_harabasz_score": 8.16972827911377,
+      "k": 8,
+      "linkage": "average"
+    },
+    "hierarchical_k9_average": {
+      "n_clusters": 9,
+      "n_noise": 0,
+      "wcss": 649751.75,
+      "silhouette_score": 0.05474446713924408,
+      "davies_bouldin_index": 1.1534058229310247,
+      "calinski_harabasz_score": 7.348623752593994,
+      "k": 9,
+      "linkage": "average"
+    },
+    "hierarchical_k10_average": {
+      "n_clusters": 10,
+      "n_noise": 0,
+      "wcss": 645998.8125,
+      "silhouette_score": 0.021157313138246536,
+      "davies_bouldin_index": 1.2215216226218997,
+      "calinski_harabasz_score": 6.891767978668213,
+      "k": 10,
+      "linkage": "average"
+    },
+    "spectral_k2": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 2
+    },
+    "spectral_k3": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 3
+    },
+    "spectral_k4": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 4
+    },
+    "spectral_k5": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 5
+    },
+    "spectral_k6": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 6
+    },
+    "spectral_k7": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 7
+    },
+    "spectral_k8": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 8
+    },
+    "spectral_k9": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 9
+    },
+    "spectral_k10": {
+      "n_clusters": 1,
+      "n_noise": 0,
+      "wcss": 723351.4375,
+      "silhouette_score": 0.0,
+      "davies_bouldin_index": Infinity,
+      "calinski_harabasz_score": 0.0,
+      "k": 10
+    }
+  },
+  "comparison": {
+    "best_by_metric": {
+      "silhouette_score": "hierarchical_k2_complete",
+      "calinski_harabasz_score": "kmeans_k2",
+      "wcss": "kmeans_k10",
+      "davies_bouldin_index": "hierarchical_k9_average"
+    },
+    "rankings": {
+      "silhouette_score": [
+        "hierarchical_k2_complete",
+        "hierarchical_k2_average",
+        "hierarchical_k3_average",
+        "hierarchical_k4_average",
+        "hierarchical_k5_average",
+        "hierarchical_k6_average",
+        "hierarchical_k7_average",
+        "kmeans_k3",
+        "hierarchical_k4_ward",
+        "hierarchical_k3_ward",
+        "kmeans_k2",
+        "kmeans_k10",
+        "kmeans_k5",
+        "kmeans_k8",
+        "kmeans_k6",
+        "kmeans_k9",
+        "kmeans_k7",
+        "kmeans_k4",
+        "hierarchical_k2_ward",
+        "hierarchical_k8_average",
+        "hierarchical_k6_ward",
+        "hierarchical_k5_ward",
+        "hierarchical_k7_ward",
+        "hierarchical_k10_ward",
+        "hierarchical_k4_complete",
+        "hierarchical_k3_complete",
+        "hierarchical_k8_ward",
+        "hierarchical_k9_ward",
+        "hierarchical_k5_complete",
+        "hierarchical_k10_complete",
+        "hierarchical_k9_average",
+        "hierarchical_k6_complete",
+        "hierarchical_k9_complete",
+        "hierarchical_k8_complete",
+        "hierarchical_k7_complete",
+        "hierarchical_k10_average",
+        "spectral_k2",
+        "spectral_k3",
+        "spectral_k4",
+        "spectral_k5",
+        "spectral_k6",
+        "spectral_k7",
+        "spectral_k8",
+        "spectral_k9",
+        "spectral_k10"
+      ],
+      "calinski_harabasz_score": [
+        "kmeans_k2",
+        "kmeans_k3",
+        "kmeans_k4",
+        "kmeans_k5",
+        "hierarchical_k3_ward",
+        "hierarchical_k2_ward",
+        "kmeans_k6",
+        "hierarchical_k4_ward",
+        "kmeans_k7",
+        "hierarchical_k5_ward",
+        "kmeans_k8",
+        "hierarchical_k6_ward",
+        "hierarchical_k2_complete",
+        "hierarchical_k2_average",
+        "hierarchical_k3_complete",
+        "kmeans_k9",
+        "hierarchical_k4_complete",
+        "hierarchical_k7_ward",
+        "kmeans_k10",
+        "hierarchical_k8_ward",
+        "hierarchical_k9_ward",
+        "hierarchical_k10_ward",
+        "hierarchical_k5_complete",
+        "hierarchical_k6_complete",
+        "hierarchical_k10_complete",
+        "hierarchical_k7_complete",
+        "hierarchical_k8_complete",
+        "hierarchical_k3_average",
+        "hierarchical_k9_complete",
+        "hierarchical_k4_average",
+        "hierarchical_k5_average",
+        "hierarchical_k6_average",
+        "hierarchical_k7_average",
+        "hierarchical_k8_average",
+        "hierarchical_k9_average",
+        "hierarchical_k10_average",
+        "spectral_k2",
+        "spectral_k3",
+        "spectral_k4",
+        "spectral_k5",
+        "spectral_k6",
+        "spectral_k7",
+        "spectral_k8",
+        "spectral_k9",
+        "spectral_k10"
+      ],
+      "wcss": [
+        "kmeans_k10",
+        "kmeans_k9",
+        "hierarchical_k10_ward",
+        "kmeans_k8",
+        "hierarchical_k9_ward",
+        "kmeans_k7",
+        "hierarchical_k8_ward",
+        "hierarchical_k10_complete",
+        "kmeans_k6",
+        "hierarchical_k7_ward",
+        "hierarchical_k6_ward",
+        "kmeans_k5",
+        "hierarchical_k9_complete",
+        "hierarchical_k8_complete",
+        "hierarchical_k5_ward",
+        "hierarchical_k7_complete",
+        "kmeans_k4",
+        "hierarchical_k6_complete",
+        "hierarchical_k4_ward",
+        "hierarchical_k5_complete",
+        "hierarchical_k4_complete",
+        "kmeans_k3",
+        "hierarchical_k3_ward",
+        "hierarchical_k3_complete",
+        "hierarchical_k10_average",
+        "hierarchical_k9_average",
+        "hierarchical_k8_average",
+        "kmeans_k2",
+        "hierarchical_k7_average",
+        "hierarchical_k6_average",
+        "hierarchical_k5_average",
+        "hierarchical_k4_average",
+        "hierarchical_k3_average",
+        "hierarchical_k2_ward",
+        "hierarchical_k2_complete",
+        "hierarchical_k2_average",
+        "spectral_k2",
+        "spectral_k3",
+        "spectral_k4",
+        "spectral_k5",
+        "spectral_k6",
+        "spectral_k7",
+        "spectral_k8",
+        "spectral_k9",
+        "spectral_k10"
+      ],
+      "davies_bouldin_index": [
+        "hierarchical_k9_average",
+        "hierarchical_k8_average",
+        "hierarchical_k10_average",
+        "hierarchical_k6_average",
+        "hierarchical_k5_average",
+        "hierarchical_k7_average",
+        "hierarchical_k4_average",
+        "hierarchical_k3_average",
+        "hierarchical_k2_complete",
+        "hierarchical_k2_average",
+        "kmeans_k8",
+        "kmeans_k9",
+        "kmeans_k10",
+        "hierarchical_k10_ward",
+        "kmeans_k7",
+        "kmeans_k5",
+        "hierarchical_k9_ward",
+        "kmeans_k6",
+        "hierarchical_k4_ward",
+        "kmeans_k4",
+        "kmeans_k3",
+        "hierarchical_k6_ward",
+        "hierarchical_k8_ward",
+        "hierarchical_k10_complete",
+        "hierarchical_k7_ward",
+        "hierarchical_k5_complete",
+        "hierarchical_k5_ward",
+        "hierarchical_k3_ward",
+        "hierarchical_k9_complete",
+        "hierarchical_k4_complete",
+        "hierarchical_k8_complete",
+        "hierarchical_k6_complete",
+        "hierarchical_k7_complete",
+        "kmeans_k2",
+        "hierarchical_k3_complete",
+        "hierarchical_k2_ward"
+      ]
+    }
+  },
+  "config": {
+    "input": {
+      "processed_data_file": "data/processed/luad_processed.pt",
+      "feature_names_file": "data/processed/feature_names.txt",
+      "sample_ids_file": "data/processed/sample_ids.txt",
+      "metadata_file": "data/processed/metadata.json"
+    },
+    "dimensionality_reduction": {
+      "pca": {
+        "enabled": true,
+        "n_components": 50,
+        "whiten": false,
+        "random_state": 42
+      },
+      "tsne": {
+        "enabled": true,
+        "n_components": 2,
+        "perplexity": 30,
+        "learning_rate": 200,
+        "n_iter": 1000,
+        "random_state": 42
+      },
+      "umap": {
+        "enabled": true,
+        "n_components": 2,
+        "n_neighbors": 15,
+        "min_dist": 0.1,
+        "metric": "euclidean",
+        "random_state": 42
+      }
+    },
+    "clustering": {
+      "kmeans": {
+        "enabled": true,
+        "n_clusters_range": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "n_init": 10,
+        "max_iter": 300,
+        "random_state": 42,
+        "algorithm": "lloyd"
+      },
+      "hierarchical": {
+        "enabled": true,
+        "n_clusters_range": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "linkage_methods": [
+          "ward",
+          "complete",
+          "average"
+        ],
+        "metric": "euclidean"
+      },
+      "spectral": {
+        "enabled": true,
+        "n_clusters_range": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "affinity": "rbf",
+        "gamma": 1.0,
+        "n_neighbors": 10,
+        "random_state": 42
+      },
+      "dbscan": {
+        "enabled": false,
+        "eps_range": [
+          0.5,
+          1.0,
+          1.5,
+          2.0
+        ],
+        "min_samples_range": [
+          5,
+          10,
+          15,
+          20
+        ],
+        "metric": "euclidean"
+      }
+    },
+    "optimal_clusters": {
+      "elbow": {
+        "enabled": true
+      },
+      "silhouette": {
+        "enabled": true,
+        "min_clusters": 2,
+        "max_clusters": 10
+      },
+      "gap_statistic": {
+        "enabled": false,
+        "n_refs": 10,
+        "max_clusters": 10
+      }
+    },
+    "evaluation": {
+      "unsupervised": [
+        "silhouette_score",
+        "davies_bouldin_index",
+        "calinski_harabasz_score",
+        "within_cluster_sum_squares"
+      ],
+      "external": {
+        "enabled": false,
+        "labels_file": null,
+        "metrics": [
+          "adjusted_rand_index",
+          "normalized_mutual_info",
+          "fowlkes_mallows_score"
+        ]
+      }
+    },
+    "visualization": {
+      "save_plots": true,
+      "plot_format": "png",
+      "dpi": 300,
+      "plots": [
+        "pca_2d",
+        "pca_3d",
+        "tsne_2d",
+        "umap_2d",
+        "elbow_curve",
+        "silhouette_plot",
+        "dendrogram",
+        "heatmap"
+      ],
+      "colormap": "tab10",
+      "heatmap_colormap": "viridis"
+    },
+    "output": {
+      "results_dir": "results/baseline",
+      "baseline_dir": "models/baseline",
+      "visualizations_dir": "results/baseline/baseline_visualizations",
+      "kmeans_results": "kmeans_metrics.json",
+      "hierarchical_results": "hierarchical_metrics.json",
+      "spectral_results": "spectral_metrics.json",
+      "dbscan_results": "dbscan_metrics.json",
+      "comparison_table": "metrics_comparison.csv",
+      "baseline_report": "baseline_clustering_results.json",
+      "optimal_clusters_file": "optimal_clusters.json"
+    },
+    "reproducibility": {
+      "random_seed": 42,
+      "save_random_state": true
+    },
+    "logging": {
+      "level": "INFO",
+      "save_logs": true,
+      "log_dir": "logs/clustering"
+    },
+    "performance": {
+      "n_jobs": -1,
+      "verbose": 1
+    }
+  }
+}

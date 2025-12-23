@@ -51,7 +51,7 @@ def parse_args():
     parser.add_argument(
         '--baseline-dir',
         type=str,
-        default='models/baseline',
+        default='results/baseline',
         help='Directory containing baseline results'
     )
     
@@ -109,7 +109,7 @@ def create_comprehensive_comparison(
     
     for algorithm in algorithms:
         # Load results
-        baseline_file = baseline_dir / f'{algorithm}_results.json'
+        baseline_file = baseline_dir / f'{algorithm}_metrics.json'
         gan_file = gan_dir / f'{algorithm}_results.json'
         
         baseline_results = load_results_file(baseline_file)
@@ -125,7 +125,7 @@ def create_comprehensive_comparison(
                 continue
             
             k = int(k_str)
-            baseline_metrics = baseline_results[k_str].get('metrics', {})
+            baseline_metrics = baseline_results[k_str]
             gan_metrics = gan_results[k_str].get('metrics', {})
             
             row = {
@@ -137,6 +137,9 @@ def create_comprehensive_comparison(
                 'gan_davies_bouldin': gan_metrics.get('davies_bouldin_index'),
                 'baseline_calinski_harabasz': baseline_metrics.get('calinski_harabasz_score'),
                 'gan_calinski_harabasz': gan_metrics.get('calinski_harabasz_score'),
+                'silhouette_improvement_%': None,
+                'davies_bouldin_improvement_%': None,
+                'calinski_harabasz_improvement_%': None,
             }
             
             # Compute improvements

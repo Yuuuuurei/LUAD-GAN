@@ -471,6 +471,21 @@ class ResultsComparator:
         print("\n" + "="*80)
 
 
+def print_metrics_table(comparator: 'ResultsComparator'):
+    """
+    Print comparison table of clustering metrics.
+    
+    Args:
+        comparator: ResultsComparator instance with baseline and GAN results
+    """
+    df = comparator.create_comparison_table()
+    print("\n" + "="*80)
+    print("CLUSTERING METRICS COMPARISON")
+    print("="*80)
+    print(df.to_string(index=False))
+    print("="*80)
+
+
 # Example usage
 if __name__ == "__main__":
     print("Clustering Evaluation Module - Phase 3 & 7")

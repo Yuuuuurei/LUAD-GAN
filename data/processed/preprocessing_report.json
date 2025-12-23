@@ -1,0 +1,29 @@
+{
+  "summary": {
+    "original_samples": 528,
+    "original_genes": 60660,
+    "final_samples": 528,
+    "final_features": 2000,
+    "genes_removed": 58660,
+    "variance_threshold": 0.01,
+    "top_n_genes": 2000,
+    "standardized": true,
+    "pca_applied": false
+  },
+  "data_quality": {
+    "missing_values_percentage": 0.0,
+    "value_range_original": {
+      "min": 0.0,
+      "max": 18.98058061411632,
+      "mean": 1.1787091101706566,
+      "median": 0.0845405461273554,
+      "std": 0.08046288952387337
+    },
+    "value_range_processed": {
+      "min": -6.5616861248551235,
+      "max": 10.857300781036846,
+      "mean": -1.679464648160237e-17,
+      "std": 1.0
+    }
+  }
+}

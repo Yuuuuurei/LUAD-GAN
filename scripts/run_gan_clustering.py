@@ -58,7 +58,7 @@ def parse_args():
     parser.add_argument(
         '--data-path',
         type=str,
-        default='data/synthetic/augmented_add_1x.npz',
+        default='data/synthetic/augmented_data.npz',
         help='Path to augmented data file'
     )
     
@@ -210,7 +210,16 @@ def run_clustering_for_algorithm(
     logger.info(f"{'='*80}")
     
     # Run clustering for all k values
-    results = pipeline.run_multiple_k(algorithm=algorithm, k_range=k_range)
+    if algorithm == 'spectral':
+        # Use nearest_neighbors affinity for better performance on high-dim data
+        results = pipeline.run_multiple_k(
+            algorithm=algorithm, 
+            k_range=k_range,
+            affinity='nearest_neighbors',
+            n_neighbors=10
+        )
+    else:
+        results = pipeline.run_multiple_k(algorithm=algorithm, k_range=k_range)
     
     # Evaluate each result
     evaluated_results = {}

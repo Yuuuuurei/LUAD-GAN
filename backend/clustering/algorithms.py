@@ -192,13 +192,17 @@ class ClusteringPipeline:
         """
         logger.info(f"Running Spectral clustering (k={n_clusters}, affinity={affinity})...")
         
-        model = SpectralClustering(
-            n_clusters=n_clusters,
-            affinity=affinity,
-            n_neighbors=n_neighbors if affinity == 'nearest_neighbors' else None,
-            random_state=self.random_state,
-            **kwargs
-        )
+        # Build parameters
+        params = {
+            'n_clusters': n_clusters,
+            'affinity': affinity,
+            'random_state': self.random_state
+        }
+        
+        if affinity == 'nearest_neighbors':
+            params['n_neighbors'] = n_neighbors
+        
+        model = SpectralClustering(**params, **kwargs)
         
         cluster_labels = model.fit_predict(self.data_scaled)
         

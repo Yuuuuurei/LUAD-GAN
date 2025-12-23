@@ -104,17 +104,42 @@ class Critic(nn.Module):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
     
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
+    def forward(self, x: torch.Tensor, return_intermediates: bool = False) -> torch.Tensor:
         """
         Forward pass.
         
         Args:
             x: Gene expression profiles (batch_size × num_features)
+            return_intermediates: Whether to return intermediate features for feature matching
             
         Returns:
-            Critic scores (batch_size × 1)
+            Critic scores (batch_size × 1), or tuple of (scores, intermediates) if return_intermediates=True
         """
-        return self.model(x)
+        if return_intermediates:
+            # Get intermediate features from the second-to-last layer
+            intermediates = []
+            current = x
+            for layer in self.model[:-1]:  # All layers except the last
+                current = layer(current)
+                intermediates.append(current)
+            final_output = self.model[-1](current)  # Last layer
+            return final_output, intermediates
+        else:
+            return self.model(x)
+    
+    def get_intermediate_features(self, x: torch.Tensor) -> torch.Tensor:
+        """
+        Get intermediate features for feature matching.
+        
+        Args:
+            x: Input samples
+            
+        Returns:
+            Intermediate features from the last hidden layer
+        """
+        _, intermediates = self.forward(x, return_intermediates=True)
+        # Return features from the last intermediate layer (before final output)
+        return intermediates[-1] if intermediates else x
 
 
 class MinibatchDiscrimination(nn.Module):

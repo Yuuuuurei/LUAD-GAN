@@ -46,6 +46,7 @@ class WGANTrainer:
         self.num_epochs = config['training']['num_epochs']
         self.batch_size = config['training']['batch_size']
         self.n_critic = config['training']['n_critic']
+        self.noise_std = config['training']['regularization'].get('noise_std', 0.0)
         
         # Initialize optimizers
         self._init_optimizers()
@@ -235,6 +236,11 @@ class WGANTrainer:
             real_data = real_data.to(self.device)
             batch_size = real_data.size(0)
             
+            # Add instance noise if enabled
+            if self.noise_std > 0:
+                noise = torch.randn_like(real_data) * self.noise_std
+                real_data = real_data + noise
+            
             # Train Critic
             for _ in range(self.n_critic):
                 self.optimizer_c.zero_grad()
@@ -242,6 +248,11 @@ class WGANTrainer:
                 # Generate fake samples
                 z = torch.randn(batch_size, self.model.latent_dim, device=self.device)
                 fake_data = self.model.generator(z)
+                
+                # Add instance noise to fake samples too
+                if self.noise_std > 0:
+                    noise = torch.randn_like(fake_data) * self.noise_std
+                    fake_data = fake_data + noise
                 
                 # Compute critic loss
                 critic_loss, wd, gp = self.model.compute_critic_loss(
@@ -265,8 +276,13 @@ class WGANTrainer:
             z = torch.randn(batch_size, self.model.latent_dim, device=self.device)
             fake_data = self.model.generator(z)
             
-            # Compute generator loss
-            generator_loss = self.model.compute_generator_loss(fake_data)
+            # Add instance noise to fake samples
+            if self.noise_std > 0:
+                noise = torch.randn_like(fake_data) * self.noise_std
+                fake_data = fake_data + noise
+            
+            # Compute generator loss (with variance regularization if enabled)
+            generator_loss = self.model.compute_generator_loss(fake_data, real_data)
             
             # Backward and optimize
             generator_loss.backward()

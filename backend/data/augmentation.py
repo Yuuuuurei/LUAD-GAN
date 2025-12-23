@@ -184,6 +184,11 @@ class DataAugmenter:
         with open(metadata_file, 'w') as f:
             json.dump(metadata, f, indent=2)
         self.logger.info(f"Saved metadata: {metadata_file}")
+        
+        # Save as .npz for compatibility
+        npz_file = output_dir / "augmented_data.npz"
+        np.savez(npz_file, data=self.augmented_data.numpy(), labels=self.labels.numpy())
+        self.logger.info(f"Saved .npz file: {npz_file}")
     
     def load(self, output_dir: Path):
         """
