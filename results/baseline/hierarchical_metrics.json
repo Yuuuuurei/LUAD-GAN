@@ -1,0 +1,272 @@
+{
+  "hierarchical_k2_ward": {
+    "n_clusters": 2,
+    "n_noise": 0,
+    "wcss": 668800.0,
+    "silhouette_score": 0.08619347214698792,
+    "davies_bouldin_index": 3.314481370868056,
+    "calinski_harabasz_score": 42.903770446777344,
+    "k": 2,
+    "linkage": "ward"
+  },
+  "hierarchical_k3_ward": {
+    "n_clusters": 3,
+    "n_noise": 0,
+    "wcss": 621595.625,
+    "silhouette_score": 0.10233327001333237,
+    "davies_bouldin_index": 2.6270516632132384,
+    "calinski_harabasz_score": 42.97153091430664,
+    "k": 3,
+    "linkage": "ward"
+  },
+  "hierarchical_k4_ward": {
+    "n_clusters": 4,
+    "n_noise": 0,
+    "wcss": 585505.1875,
+    "silhouette_score": 0.10796947777271271,
+    "davies_bouldin_index": 2.3137897836662447,
+    "calinski_harabasz_score": 41.122013092041016,
+    "k": 4,
+    "linkage": "ward"
+  },
+  "hierarchical_k5_ward": {
+    "n_clusters": 5,
+    "n_noise": 0,
+    "wcss": 555609.4375,
+    "silhouette_score": 0.07555210590362549,
+    "davies_bouldin_index": 2.5135644300552333,
+    "calinski_harabasz_score": 39.474246978759766,
+    "k": 5,
+    "linkage": "ward"
+  },
+  "hierarchical_k6_ward": {
+    "n_clusters": 6,
+    "n_noise": 0,
+    "wcss": 534428.125,
+    "silhouette_score": 0.07576723396778107,
+    "davies_bouldin_index": 2.399013344498744,
+    "calinski_harabasz_score": 36.90597915649414,
+    "k": 6,
+    "linkage": "ward"
+  },
+  "hierarchical_k7_ward": {
+    "n_clusters": 7,
+    "n_noise": 0,
+    "wcss": 517644.0,
+    "silhouette_score": 0.07527312636375427,
+    "davies_bouldin_index": 2.4327125972541643,
+    "calinski_harabasz_score": 34.50684356689453,
+    "k": 7,
+    "linkage": "ward"
+  },
+  "hierarchical_k8_ward": {
+    "n_clusters": 8,
+    "n_noise": 0,
+    "wcss": 502170.46875,
+    "silhouette_score": 0.06659527122974396,
+    "davies_bouldin_index": 2.42462094909778,
+    "calinski_harabasz_score": 32.719146728515625,
+    "k": 8,
+    "linkage": "ward"
+  },
+  "hierarchical_k9_ward": {
+    "n_clusters": 9,
+    "n_noise": 0,
+    "wcss": 488857.0625,
+    "silhouette_score": 0.06546374410390854,
+    "davies_bouldin_index": 2.283737957985598,
+    "calinski_harabasz_score": 31.11916732788086,
+    "k": 9,
+    "linkage": "ward"
+  },
+  "hierarchical_k10_ward": {
+    "n_clusters": 10,
+    "n_noise": 0,
+    "wcss": 477276.4375,
+    "silhouette_score": 0.07073678076267242,
+    "davies_bouldin_index": 2.2376089300463655,
+    "calinski_harabasz_score": 29.674592971801758,
+    "k": 10,
+    "linkage": "ward"
+  },
+  "hierarchical_k2_complete": {
+    "n_clusters": 2,
+    "n_noise": 0,
+    "wcss": 676279.9375,
+    "silhouette_score": 0.2595118284225464,
+    "davies_bouldin_index": 1.5611459741593772,
+    "calinski_harabasz_score": 36.61149978637695,
+    "k": 2,
+    "linkage": "complete"
+  },
+  "hierarchical_k3_complete": {
+    "n_clusters": 3,
+    "n_noise": 0,
+    "wcss": 636436.125,
+    "silhouette_score": 0.0680096372961998,
+    "davies_bouldin_index": 3.0623789376045685,
+    "calinski_harabasz_score": 35.84849548339844,
+    "k": 3,
+    "linkage": "complete"
+  },
+  "hierarchical_k4_complete": {
+    "n_clusters": 4,
+    "n_noise": 0,
+    "wcss": 603243.625,
+    "silhouette_score": 0.0707012489438057,
+    "davies_bouldin_index": 2.668275229290322,
+    "calinski_harabasz_score": 34.776729583740234,
+    "k": 4,
+    "linkage": "complete"
+  },
+  "hierarchical_k5_complete": {
+    "n_clusters": 5,
+    "n_noise": 0,
+    "wcss": 594836.5625,
+    "silhouette_score": 0.06348554790019989,
+    "davies_bouldin_index": 2.473383877633804,
+    "calinski_harabasz_score": 28.248640060424805,
+    "k": 5,
+    "linkage": "complete"
+  },
+  "hierarchical_k6_complete": {
+    "n_clusters": 6,
+    "n_noise": 0,
+    "wcss": 573297.8125,
+    "silhouette_score": 0.0436481311917305,
+    "davies_bouldin_index": 2.7992556800753685,
+    "calinski_harabasz_score": 27.325410842895508,
+    "k": 6,
+    "linkage": "complete"
+  },
+  "hierarchical_k7_complete": {
+    "n_clusters": 7,
+    "n_noise": 0,
+    "wcss": 568930.6875,
+    "silhouette_score": 0.03919606655836105,
+    "davies_bouldin_index": 2.8748672777125814,
+    "calinski_harabasz_score": 23.568544387817383,
+    "k": 7,
+    "linkage": "complete"
+  },
+  "hierarchical_k8_complete": {
+    "n_clusters": 8,
+    "n_noise": 0,
+    "wcss": 550449.125,
+    "silhouette_score": 0.040115565061569214,
+    "davies_bouldin_index": 2.798654169882375,
+    "calinski_harabasz_score": 23.333986282348633,
+    "k": 8,
+    "linkage": "complete"
+  },
+  "hierarchical_k9_complete": {
+    "n_clusters": 9,
+    "n_noise": 0,
+    "wcss": 543205.25,
+    "silhouette_score": 0.04147610068321228,
+    "davies_bouldin_index": 2.650971860725367,
+    "calinski_harabasz_score": 21.514863967895508,
+    "k": 9,
+    "linkage": "complete"
+  },
+  "hierarchical_k10_complete": {
+    "n_clusters": 10,
+    "n_noise": 0,
+    "wcss": 506835.5,
+    "silhouette_score": 0.06266112625598907,
+    "davies_bouldin_index": 2.426479947866652,
+    "calinski_harabasz_score": 24.587257385253906,
+    "k": 10,
+    "linkage": "complete"
+  },
+  "hierarchical_k2_average": {
+    "n_clusters": 2,
+    "n_noise": 0,
+    "wcss": 676279.9375,
+    "silhouette_score": 0.2595118284225464,
+    "davies_bouldin_index": 1.5611459741593772,
+    "calinski_harabasz_score": 36.61149978637695,
+    "k": 2,
+    "linkage": "average"
+  },
+  "hierarchical_k3_average": {
+    "n_clusters": 3,
+    "n_noise": 0,
+    "wcss": 667493.625,
+    "silhouette_score": 0.2230209857225418,
+    "davies_bouldin_index": 1.500419989044266,
+    "calinski_harabasz_score": 21.966773986816406,
+    "k": 3,
+    "linkage": "average"
+  },
+  "hierarchical_k4_average": {
+    "n_clusters": 4,
+    "n_noise": 0,
+    "wcss": 663267.0,
+    "silhouette_score": 0.18689382076263428,
+    "davies_bouldin_index": 1.4581149295877402,
+    "calinski_harabasz_score": 15.822794914245605,
+    "k": 4,
+    "linkage": "average"
+  },
+  "hierarchical_k5_average": {
+    "n_clusters": 5,
+    "n_noise": 0,
+    "wcss": 659438.6875,
+    "silhouette_score": 0.17875580489635468,
+    "davies_bouldin_index": 1.3907087660014816,
+    "calinski_harabasz_score": 12.672281265258789,
+    "k": 5,
+    "linkage": "average"
+  },
+  "hierarchical_k6_average": {
+    "n_clusters": 6,
+    "n_noise": 0,
+    "wcss": 655877.375,
+    "silhouette_score": 0.17479977011680603,
+    "davies_bouldin_index": 1.3448084347123066,
+    "calinski_harabasz_score": 10.740260124206543,
+    "k": 6,
+    "linkage": "average"
+  },
+  "hierarchical_k7_average": {
+    "n_clusters": 7,
+    "n_noise": 0,
+    "wcss": 653303.875,
+    "silhouette_score": 0.11169806122779846,
+    "davies_bouldin_index": 1.4422003157228964,
+    "calinski_harabasz_score": 9.310320854187012,
+    "k": 7,
+    "linkage": "average"
+  },
+  "hierarchical_k8_average": {
+    "n_clusters": 8,
+    "n_noise": 0,
+    "wcss": 651681.4375,
+    "silhouette_score": 0.07760646194219589,
+    "davies_bouldin_index": 1.1987772426389895,
+    "calinski_harabasz_score": 8.16972827911377,
+    "k": 8,
+    "linkage": "average"
+  },
+  "hierarchical_k9_average": {
+    "n_clusters": 9,
+    "n_noise": 0,
+    "wcss": 649751.75,
+    "silhouette_score": 0.05474446713924408,
+    "davies_bouldin_index": 1.1534058229310247,
+    "calinski_harabasz_score": 7.348623752593994,
+    "k": 9,
+    "linkage": "average"
+  },
+  "hierarchical_k10_average": {
+    "n_clusters": 10,
+    "n_noise": 0,
+    "wcss": 645998.8125,
+    "silhouette_score": 0.021157313138246536,
+    "davies_bouldin_index": 1.2215216226218997,
+    "calinski_harabasz_score": 6.891767978668213,
+    "k": 10,
+    "linkage": "average"
+  }
+}

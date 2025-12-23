@@ -1,0 +1,29 @@
+{
+  "data_path": "data/synthetic/augmented_data.npz",
+  "algorithms": [
+    "kmeans"
+  ],
+  "k_range": [
+    3,
+    5
+  ],
+  "apply_pca": true,
+  "timestamp": "2025-12-21T20:54:36.668404",
+  "results_summary": {
+    "kmeans": {
+      "optimal_k": 3,
+      "optimal_metrics": {
+        "silhouette_score": 0.09400150924921036,
+        "davies_bouldin_index": 2.55052778657678,
+        "calinski_harabasz_score": 98.2435073852539,
+        "wcss": 1297085.0,
+        "n_clusters": 3,
+        "cluster_sizes": {
+          "0": 299,
+          "1": 234,
+          "2": 523
+        }
+      }
+    }
+  }
+}

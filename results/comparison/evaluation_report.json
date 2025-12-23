@@ -1,0 +1,223 @@
+{
+  "timestamp": "2025-12-21T13:20:52.689310",
+  "summary": {
+    "total_configurations": 9,
+    "algorithms_evaluated": [
+      "kmeans"
+    ],
+    "k_values_tested": [
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "mean_silhouette_improvement_%": -23.368205039178743,
+    "mean_davies_bouldin_improvement_%": -21.080747843814876,
+    "mean_calinski_harabasz_improvement_%": 38.28504009894379
+  },
+  "detailed_results": [
+    {
+      "algorithm": "kmeans",
+      "k": 2,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.09804657101631165,
+          "gan": 0.10588604211807251,
+          "improvement_%": 7.9956606544217035
+        },
+        "davies_bouldin": {
+          "baseline": 2.9489917814749655,
+          "gan": 2.8432835637104024,
+          "improvement_%": 3.5845545053262997
+        },
+        "calinski_harabasz": {
+          "baseline": 57.83574295043945,
+          "gan": 109.30068969726562,
+          "improvement_%": 88.98467300908966
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 3,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.11152539402246475,
+          "gan": 0.0999300628900528,
+          "improvement_%": -10.397032204231701
+        },
+        "davies_bouldin": {
+          "baseline": 2.3914058854043296,
+          "gan": 3.0622876750358548,
+          "improvement_%": -28.053865457393695
+        },
+        "calinski_harabasz": {
+          "baseline": 50.28048324584961,
+          "gan": 79.09098052978516,
+          "improvement_%": 57.29956321832628
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 4,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.08723784983158112,
+          "gan": 0.10087718069553375,
+          "improvement_%": 15.634648137573699
+        },
+        "davies_bouldin": {
+          "baseline": 2.3491186564285216,
+          "gan": 2.695559674943823,
+          "improvement_%": -14.747701976111003
+        },
+        "calinski_harabasz": {
+          "baseline": 46.781986236572266,
+          "gan": 67.01908111572266,
+          "improvement_%": 43.258306256628856
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 5,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.094940185546875,
+          "gan": 0.09203051775693893,
+          "improvement_%": -3.064737838014304
+        },
+        "davies_bouldin": {
+          "baseline": 2.264302918622528,
+          "gan": 2.606524540904823,
+          "improvement_%": -15.11377384482121
+        },
+        "calinski_harabasz": {
+          "baseline": 44.71411895751953,
+          "gan": 61.30543518066406,
+          "improvement_%": 37.105318431762115
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 6,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.09073340892791748,
+          "gan": 0.08987836539745331,
+          "improvement_%": -0.942369013318408
+        },
+        "davies_bouldin": {
+          "baseline": 2.2851816041028457,
+          "gan": 2.8409238185878736,
+          "improvement_%": -24.319389473783655
+        },
+        "calinski_harabasz": {
+          "baseline": 41.98176956176758,
+          "gan": 54.026466369628906,
+          "improvement_%": 28.69030279950449
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 7,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.08757412433624268,
+          "gan": 0.04841384291648865,
+          "improvement_%": -44.716726220860984
+        },
+        "davies_bouldin": {
+          "baseline": 2.238481828961872,
+          "gan": 2.80784751414041,
+          "improvement_%": -25.43534987918974
+        },
+        "calinski_harabasz": {
+          "baseline": 40.028560638427734,
+          "gan": 49.12421798706055,
+          "improvement_%": 22.722918844853265
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 8,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.09376402944326401,
+          "gan": 0.0424429215490818,
+          "improvement_%": -54.73432423809843
+        },
+        "davies_bouldin": {
+          "baseline": 2.108010195533118,
+          "gan": 2.7820736203750918,
+          "improvement_%": -31.97628864747984
+        },
+        "calinski_harabasz": {
+          "baseline": 37.75783157348633,
+          "gan": 46.662086486816406,
+          "improvement_%": 23.582537826623167
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 9,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.08995866030454636,
+          "gan": 0.035999052226543427,
+          "improvement_%": -59.982671924334895
+        },
+        "davies_bouldin": {
+          "baseline": 2.1529475038235435,
+          "gan": 2.7604693780360177,
+          "improvement_%": -28.218146198806103
+        },
+        "calinski_harabasz": {
+          "baseline": 35.5819206237793,
+          "gan": 43.1874885559082,
+          "improvement_%": 21.374810012493047
+        }
+      }
+    },
+    {
+      "algorithm": "kmeans",
+      "k": 10,
+      "metrics": {
+        "silhouette": {
+          "baseline": 0.09583590179681778,
+          "gan": 0.03823249414563179,
+          "improvement_%": -60.10629270574538
+        },
+        "davies_bouldin": {
+          "baseline": 2.1995853406351404,
+          "gan": 2.7593087549074964,
+          "improvement_%": -25.446769622074918
+        },
+        "calinski_harabasz": {
+          "baseline": 33.56004333496094,
+          "gan": 40.791202545166016,
+          "improvement_%": 21.54693049121325
+        }
+      }
+    }
+  ],
+  "best_configurations": [
+    {
+      "algorithm": "kmeans",
+      "k": 4,
+      "silhouette_improvement": 15.634648137573699,
+      "baseline_silhouette": 0.08723784983158112,
+      "gan_silhouette": 0.10087718069553375
+    }
+  ]
+}

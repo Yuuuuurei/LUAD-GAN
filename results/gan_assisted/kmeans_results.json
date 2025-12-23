@@ -1,0 +1,48 @@
+{
+  "3": {
+    "algorithm": "kmeans",
+    "n_clusters": 3,
+    "metrics": {
+      "silhouette_score": 0.09400150924921036,
+      "davies_bouldin_index": 2.55052778657678,
+      "calinski_harabasz_score": 98.2435073852539,
+      "wcss": 1297085.0,
+      "n_clusters": 3,
+      "cluster_sizes": {
+        "0": 299,
+        "1": 234,
+        "2": 523
+      }
+    },
+    "cluster_sizes": {
+      "0": 299,
+      "1": 234,
+      "2": 523
+    }
+  },
+  "5": {
+    "algorithm": "kmeans",
+    "n_clusters": 5,
+    "metrics": {
+      "silhouette_score": 0.09197381138801575,
+      "davies_bouldin_index": 2.322868550307844,
+      "calinski_harabasz_score": 87.94065856933594,
+      "wcss": 1153162.0,
+      "n_clusters": 5,
+      "cluster_sizes": {
+        "0": 141,
+        "1": 306,
+        "2": 179,
+        "3": 48,
+        "4": 382
+      }
+    },
+    "cluster_sizes": {
+      "0": 141,
+      "1": 306,
+      "2": 179,
+      "3": 48,
+      "4": 382
+    }
+  }
+}

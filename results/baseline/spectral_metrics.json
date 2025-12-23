@@ -1,0 +1,83 @@
+{
+  "spectral_k2": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 2
+  },
+  "spectral_k3": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 3
+  },
+  "spectral_k4": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 4
+  },
+  "spectral_k5": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 5
+  },
+  "spectral_k6": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 6
+  },
+  "spectral_k7": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 7
+  },
+  "spectral_k8": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 8
+  },
+  "spectral_k9": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 9
+  },
+  "spectral_k10": {
+    "n_clusters": 1,
+    "n_noise": 0,
+    "wcss": 723351.4375,
+    "silhouette_score": 0.0,
+    "davies_bouldin_index": Infinity,
+    "calinski_harabasz_score": 0.0,
+    "k": 10
+  }
+}
