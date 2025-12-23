@@ -373,6 +373,25 @@ Baseline Clustering          GAN-Assisted Clustering
  Overlapping clusters         Clear separation
 ```
 
+**Actual Results Visualizations**:
+
+*Baseline Clustering (k=3)*:
+- ![Elbow Curve](./results/baseline/baseline_visualizations/elbow_curve.png)
+- ![Cluster Heatmap](./results/baseline/baseline_visualizations/cluster_heatmap.png)
+- ![PCA Clusters](./results/baseline/baseline_visualizations/pca_clusters.png)
+- ![t-SNE Clusters](./results/baseline/baseline_visualizations/tsne_clusters.png)
+- ![Silhouette Analysis](./results/baseline/baseline_visualizations/silhouette_k3.png)
+
+*GAN-Assisted Clustering (k=3)*:
+- ![GAN PCA Clusters](./results/gan_assisted/visualizations/kmeans/pca_k3.png)
+- ![GAN t-SNE Clusters](./results/gan_assisted/visualizations/kmeans/tsne_k3.png)
+- ![GAN Silhouette Analysis](./results/gan_assisted/visualizations/kmeans/silhouette_k3.png)
+
+**Cluster Size Distributions**:
+- ![Baseline vs GAN Cluster Sizes](./results/gan_assisted/visualizations/kmeans/cluster_sizes_k3.png)
+
+*Note: Interactive visualizations are also available in the Streamlit web interface under the "Results & Validation" page.*
+
 ### Training Dynamics
 
 **GAN Training Configuration**:
