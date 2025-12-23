@@ -6,7 +6,10 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent.parent.parent
 sys.path.insert(0, str(project_root))
 
-from frontend.streamlit.config import *
+from frontend.streamlit.config import (
+    AUGMENTATION_STRATEGIES,
+    CLUSTERING_ALGORITHMS,
+)
 from backend.clustering.algorithms import ClusteringPipeline
 from backend.clustering.evaluation import ClusteringEvaluator
 
@@ -14,7 +17,7 @@ st.title("🎨 GAN-Assisted Clustering")
 st.markdown("---")
 
 # Check prerequisites
-if not st.session_state.get('synthetic_data'):
+if 'synthetic_data' not in st.session_state or st.session_state['synthetic_data'] is None:
     st.error("⚠️ No synthetic data. Please complete GAN training first.")
     st.stop()
 

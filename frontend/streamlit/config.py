@@ -36,12 +36,22 @@ ERROR_MESSAGES = {
 # Success messages
 SUCCESS_MESSAGES = {
     'data_uploaded': "Data uploaded and processed successfully!",
+    'data_processed': "Data uploaded and processed successfully!",
     'training_completed': "GAN training completed successfully!",
-    'clustering_done': "Clustering completed successfully!"
+    'training_complete': "GAN training completed successfully!",
+    'clustering_done': "Clustering completed successfully!",
+    'baseline_complete': "Clustering completed successfully!",
+    'synthetic_generated': "Synthetic data generated successfully!"
 }
 
 # Clustering algorithms
 CLUSTERING_ALGORITHMS = ["kmeans", "hierarchical", "spectral"]
+
+AUGMENTATION_STRATEGIES = {
+    "add": "Add synthetic data to real data",
+    "mixed": "Mix real and synthetic data (50/50)",
+    "replace": "Replace real data with synthetic data"
+}
 
 # Default values for clustering
 DEFAULT_K = 5

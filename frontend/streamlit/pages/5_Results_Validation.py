@@ -21,6 +21,18 @@ if 'gan_results' not in st.session_state:
     st.error("⚠️ No GAN-assisted results")
     st.stop()
 
+if 'baseline_algorithm' not in st.session_state:
+    st.error("⚠️ No baseline algorithm information")
+    st.stop()
+
+if 'gan_algorithm' not in st.session_state:
+    st.error("⚠️ No GAN-assisted algorithm information")
+    st.stop()
+
+if 'gan_real_labels' not in st.session_state:
+    st.error("⚠️ No GAN-assisted cluster labels")
+    st.stop()
+
 st.success("✅ Both baseline and GAN-assisted results available!")
 
 # Get results (use first k for each)
@@ -177,7 +189,7 @@ else:
 
 # Display GAN-assisted visualizations
 st.subheader("GAN-Assisted Clustering Visualizations")
-gan_viz_path = Path(project_root) / "results" / "gan_assisted" / "visualizations" / "kmeans"
+gan_viz_path = Path(project_root) / "results" / "gan_assisted" / "visualizations" / st.session_state.gan_algorithm
 
 if gan_viz_path.exists():
     # Show visualizations for the selected k value

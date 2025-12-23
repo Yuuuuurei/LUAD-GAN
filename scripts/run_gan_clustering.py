@@ -496,6 +496,20 @@ def main():
     with open(summary_file, 'w') as f:
         json.dump(summary, f, indent=2)
     
+    # Save real sample cluster labels for each algorithm
+    real_labels_dict = {}
+    for algorithm, results in all_results.items():
+        optimal_k = max(
+            results.keys(),
+            key=lambda k: results[k]['metrics'].get('silhouette_score', -1)
+        )
+        real_labels = results[optimal_k]['real_sample_labels']
+        real_labels_dict[algorithm] = real_labels
+    
+    labels_file = output_dir / 'real_sample_clusters.npz'
+    np.savez(labels_file, **real_labels_dict)
+    logger.info(f"✓ Real sample cluster labels saved to: {labels_file}")
+    
     logger.info("\n" + "="*80)
     logger.info("✓ GAN-Assisted Clustering Complete!")
     logger.info("="*80)

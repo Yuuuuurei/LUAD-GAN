@@ -197,11 +197,12 @@ with tab2:
         
         with col2:
             if apply_pca:
+                max_components = min(500, df_raw.shape[1])
                 pca_components = st.number_input(
                     "Number of components",
                     min_value=10,
-                    max_value=min(500, df_raw.shape[1]),
-                    value=DEFAULT_PCA_COMPONENTS,
+                    max_value=max_components,
+                    value=min(DEFAULT_PCA_COMPONENTS, max_components),
                     step=10,
                     help="Number of principal components to keep"
                 )
