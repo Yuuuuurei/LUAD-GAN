@@ -153,6 +153,49 @@ with col2:
 st.markdown("---")
 
 # ============================================================================
+# Saved Visualizations
+# ============================================================================
+st.header("🖼️ Detailed Visualizations")
+
+st.info("📊 These visualizations were generated during the clustering analysis and saved to disk.")
+
+# Display baseline visualizations
+st.subheader("Baseline Clustering Visualizations")
+baseline_viz_path = Path(project_root) / "results" / "baseline" / "baseline_visualizations"
+
+if baseline_viz_path.exists():
+    viz_files = list(baseline_viz_path.glob("*.png"))
+    if viz_files:
+        cols = st.columns(2)
+        for i, viz_file in enumerate(viz_files[:4]):  # Show first 4
+            with cols[i % 2]:
+                st.image(str(viz_file), caption=viz_file.stem.replace("_", " ").title(), use_column_width=True)
+    else:
+        st.warning("No baseline visualization files found.")
+else:
+    st.warning("Baseline visualizations directory not found.")
+
+# Display GAN-assisted visualizations
+st.subheader("GAN-Assisted Clustering Visualizations")
+gan_viz_path = Path(project_root) / "results" / "gan_assisted" / "visualizations" / "kmeans"
+
+if gan_viz_path.exists():
+    # Show visualizations for the selected k value
+    selected_k = st.selectbox("Select k for GAN visualizations", [2, 3, 4, 5], index=1)
+    viz_files = list(gan_viz_path.glob(f"*k{selected_k}.png"))
+    if viz_files:
+        cols = st.columns(2)
+        for i, viz_file in enumerate(viz_files):
+            with cols[i % 2]:
+                st.image(str(viz_file), caption=f"GAN-Assisted {viz_file.stem.replace('_', ' ').title()}", use_column_width=True)
+    else:
+        st.warning(f"No GAN-assisted visualization files found for k={selected_k}.")
+else:
+    st.warning("GAN-assisted visualizations directory not found.")
+
+st.markdown("---")
+
+# ============================================================================
 # Export Results
 # ============================================================================
 st.header("💾 Export Results")

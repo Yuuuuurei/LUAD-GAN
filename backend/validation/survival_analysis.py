@@ -19,7 +19,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from typing import Dict, List, Tuple, Optional, Union
+from typing import Dict, List, Tuple, Optional, Union, TYPE_CHECKING, Any
 from pathlib import Path
 import logging
 import warnings
@@ -31,6 +31,10 @@ try:
     from lifelines.statistics import logrank_test, multivariate_logrank_test
     LIFELINES_AVAILABLE = True
 except ImportError:
+    KaplanMeierFitter = None
+    CoxPHFitter = None
+    logrank_test = None
+    multivariate_logrank_test = None
     LIFELINES_AVAILABLE = False
     logging.warning("lifelines not installed. Survival analysis will not be available.")
     logging.warning("Install with: pip install lifelines")
@@ -92,7 +96,7 @@ class SurvivalAnalyzer:
         logger.info(f"  Censored: {(1 - self.survival_df['event']).sum()}")
         logger.info(f"  Clusters: {self.n_clusters}")
     
-    def compute_kaplan_meier(self) -> Dict[int, KaplanMeierFitter]:
+    def compute_kaplan_meier(self) -> Dict[int, Any]:
         """
         Compute Kaplan-Meier survival curves for each cluster.
         
